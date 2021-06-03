@@ -15,35 +15,38 @@ import "./InterestRateModel.sol";
  */
 contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
     /**
-     * @notice Initialize the money market
-     * @param comptroller_ The address of the Comptroller
-     * @param interestRateModel_ The address of the interest rate model
-     * @param initialExchangeRateMantissa_ The initial exchange rate, scaled by 1e18
+     * @notice Initialize the money market  初始化
+     * @param comptroller_ The address of the Comptroller ：comptroller审计长地址
+     * @param interestRateModel_ The address of the interest rate model ：interestemodel_利率模型的地址
+     * @param initialExchangeRateMantissa_ The initial exchange rate, scaled by 1e18 初始汇率，按比例1e18
      * @param name_ EIP-20 name of this token
      * @param symbol_ EIP-20 symbol of this token
      * @param decimals_ EIP-20 decimal precision of this token
      */
+//    初始化
     function initialize(ComptrollerInterface comptroller_,
-                        InterestRateModel interestRateModel_,
-                        uint initialExchangeRateMantissa_,
-                        string memory name_,
-                        string memory symbol_,
-                        uint8 decimals_) public {
+        InterestRateModel interestRateModel_, //利率模型
+        uint initialExchangeRateMantissa_,
+        string memory name_,
+        string memory symbol_,
+        uint8 decimals_) public {
         require(msg.sender == admin, "only admin may initialize the market");
         require(accrualBlockNumber == 0 && borrowIndex == 0, "market may only be initialized once");
 
         // Set initial exchange rate
+//        设定初始汇率
         initialExchangeRateMantissa = initialExchangeRateMantissa_;
+        //        初始汇率必须大于零
         require(initialExchangeRateMantissa > 0, "initial exchange rate must be greater than zero.");
 
-        // Set the comptroller
+        // Set the comptroller  设置审计
         uint err = _setComptroller(comptroller_);
         require(err == uint(Error.NO_ERROR), "setting comptroller failed");
-
+        //初始化块号和借用索引(块号模拟依赖于控制器的设置)
         // Initialize block number and borrow index (block number mocks depend on comptroller being set)
         accrualBlockNumber = getBlockNumber();
         borrowIndex = mantissaOne;
-
+        //设置利率模型(取决于block number / borrow index)
         // Set the interest rate model (depends on block number / borrow index)
         err = _setInterestRateModelFresh(interestRateModel_);
         require(err == uint(Error.NO_ERROR), "setting interest rate model failed");
@@ -51,7 +54,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         name = name_;
         symbol = symbol_;
         decimals = decimals_;
-
+        //计数器开始为true，防止它从零变为非零(即更小的成本/退款)
         // The counter starts true to prevent changing it from zero to non-zero (i.e. smaller cost/refund)
         _notEntered = true;
     }
@@ -80,7 +83,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         /* Get the allowance, infinite for the account owner */
         uint startingAllowance = 0;
         if (spender == src) {
-            startingAllowance = uint(-1);
+            startingAllowance = uint(- 1);
         } else {
             startingAllowance = transferAllowances[src][spender];
         }
@@ -114,7 +117,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         accountTokens[dst] = dstTokensNew;
 
         /* Eat some of the allowance (if necessary) */
-        if (startingAllowance != uint(-1)) {
+        if (startingAllowance != uint(- 1)) {
             transferAllowances[src][spender] = allowanceNew;
         }
 
@@ -188,7 +191,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @return The amount of underlying owned by `owner`
      */
     function balanceOfUnderlying(address owner) external returns (uint) {
-        Exp memory exchangeRate = Exp({mantissa: exchangeRateCurrent()});
+        Exp memory exchangeRate = Exp({mantissa : exchangeRateCurrent()});
         (MathError mErr, uint balance) = mulScalarTruncate(exchangeRate, accountTokens[owner]);
         require(mErr == MathError.NO_ERROR, "balance could not be calculated");
         return balance;
@@ -200,6 +203,12 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @param account Address of the account to snapshot
      * @return (possible error, token balance, borrow balance, exchange rate mantissa)
      */
+    /*
+        * @notice获取账户余额的快照，以及缓存的汇率
+        * @dev这是审计员用来更有效地执行流动性检查。
+        * @param account待快照的帐号地址
+        * @return(可能的错误，代币余额，借款余额，汇率尾数)
+    */
     function getAccountSnapshot(address account) external view returns (uint, uint, uint, uint) {
         uint vTokenBalance = accountTokens[account];
         uint borrowBalance;
@@ -276,7 +285,9 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
 
     /**
      * @notice Return the borrow balance of account based on stored data
+     * 根据存储的数据返回帐户的借出余额
      * @param account The address whose balance should be calculated
+     * account需要计算余额的地址
      * @return (error code, the calculated balance or 0 if error code is non-zero)
      */
     function borrowBalanceStoredInternal(address account) internal view returns (MathError, uint) {
@@ -381,6 +392,11 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @dev This calculates interest accrued from the last checkpointed block
      *   up to the current block and writes new checkpoint to storage.
      */
+    /*
+        * @notice将应计利息应用于总借款和准备金
+        * @dev计算从最后一个检查点块累积的利息
+        *直到当前块，并将新的检查点写入存储。
+    */
     function accrueInterest() public returns (uint) {
         /* Remember the initial block number */
         uint currentBlockNumber = getBlockNumber();
@@ -420,7 +436,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         uint totalReservesNew;
         uint borrowIndexNew;
 
-        (mathErr, simpleInterestFactor) = mulScalar(Exp({mantissa: borrowRateMantissa}), blockDelta);
+        (mathErr, simpleInterestFactor) = mulScalar(Exp({mantissa : borrowRateMantissa}), blockDelta);
         if (mathErr != MathError.NO_ERROR) {
             return failOpaque(Error.MATH_ERROR, FailureInfo.ACCRUE_INTEREST_SIMPLE_INTEREST_FACTOR_CALCULATION_FAILED, uint(mathErr));
         }
@@ -435,7 +451,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
             return failOpaque(Error.MATH_ERROR, FailureInfo.ACCRUE_INTEREST_NEW_TOTAL_BORROWS_CALCULATION_FAILED, uint(mathErr));
         }
 
-        (mathErr, totalReservesNew) = mulScalarTruncateAddUInt(Exp({mantissa: reserveFactorMantissa}), interestAccumulated, reservesPrior);
+        (mathErr, totalReservesNew) = mulScalarTruncateAddUInt(Exp({mantissa : reserveFactorMantissa}), interestAccumulated, reservesPrior);
         if (mathErr != MathError.NO_ERROR) {
             return failOpaque(Error.MATH_ERROR, FailureInfo.ACCRUE_INTEREST_NEW_TOTAL_RESERVES_CALCULATION_FAILED, uint(mathErr));
         }
@@ -467,6 +483,12 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @param mintAmount The amount of the underlying asset to supply
      * @return (uint, uint) An error code (0=success, otherwise a failure, see ErrorReporter.sol), and the actual mint amount.
      */
+    /*
+        * @notice发送方向市场提供资产并在交换中接收vtoken
+        * @dev无论操作是否成功，除非返回，否则产生利息
+        * @param mintAmount基础资产的供应量
+        * @return (uint, uint)错误代码(0=success，否则失败，参见errorreport .sol)，以及实际的铸币量。
+    */
     function mintInternal(uint mintAmount) internal nonReentrant returns (uint, uint) {
         uint error = accrueInterest();
         if (error != uint(Error.NO_ERROR)) {
@@ -494,6 +516,13 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @param mintAmount The amount of the underlying asset to supply
      * @return (uint, uint) An error code (0=success, otherwise a failure, see ErrorReporter.sol), and the actual mint amount.
      */
+    /*
+        * @notice用户向市场提供资产并接收vtoken作为交换
+        * @dev假设利息已经累积到当前块
+        * @param minter提供资产的帐户地址
+        * @param mintAmount基础资产的供应量
+        * @return (uint, uint)错误代码(0=success，否则失败，参见errorreport .sol)，以及实际的铸币量。
+    */
     function mintFresh(address minter, uint mintAmount) internal returns (uint, uint) {
         /* Fail if mint not allowed */
         uint allowed = comptroller.mintAllowed(address(this), minter, mintAmount);
@@ -532,7 +561,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
          *  mintTokens = actualMintAmount / exchangeRate
          */
 
-        (vars.mathErr, vars.mintTokens) = divScalarByExpTruncate(vars.actualMintAmount, Exp({mantissa: vars.exchangeRateMantissa}));
+        (vars.mathErr, vars.mintTokens) = divScalarByExpTruncate(vars.actualMintAmount, Exp({mantissa : vars.exchangeRateMantissa}));
         require(vars.mathErr == MathError.NO_ERROR, "MINT_EXCHANGE_CALCULATION_FAILED");
 
         /*
@@ -610,6 +639,14 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @param redeemAmountIn The number of underlying tokens to receive from redeeming vTokens (only one of redeemTokensIn or redeemAmountIn may be non-zero)
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
+    /*
+        * @notice用户赎回vtoken以换取基础资产
+        * @dev假设利息已经累积到当前块
+        * @param redeemer赎回令牌的帐户地址
+        * @param redeemTokensIn赎回到基础的vtoken的数量(只有一个redeemTokensIn或redeemAmountIn可能是非零的)
+        * @param redeemAmountIn从redeemtokenin或redeemAmountIn中接收到的基础token的数量(只有一个redeemtokenin或redeemAmountIn可能为非零)
+        * @return uint 0=success，否则失败(参见ErrorReporter。索尔详情)
+    */
     function redeemFresh(address payable redeemer, uint redeemTokensIn, uint redeemAmountIn) internal returns (uint) {
         require(redeemTokensIn == 0 || redeemAmountIn == 0, "one of redeemTokensIn or redeemAmountIn must be zero");
 
@@ -630,7 +667,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
              */
             vars.redeemTokens = redeemTokensIn;
 
-            (vars.mathErr, vars.redeemAmount) = mulScalarTruncate(Exp({mantissa: vars.exchangeRateMantissa}), redeemTokensIn);
+            (vars.mathErr, vars.redeemAmount) = mulScalarTruncate(Exp({mantissa : vars.exchangeRateMantissa}), redeemTokensIn);
             if (vars.mathErr != MathError.NO_ERROR) {
                 return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_TOKENS_CALCULATION_FAILED, uint(vars.mathErr));
             }
@@ -641,7 +678,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
              *  redeemAmount = redeemAmountIn
              */
 
-            (vars.mathErr, vars.redeemTokens) = divScalarByExpTruncate(redeemAmountIn, Exp({mantissa: vars.exchangeRateMantissa}));
+            (vars.mathErr, vars.redeemTokens) = divScalarByExpTruncate(redeemAmountIn, Exp({mantissa : vars.exchangeRateMantissa}));
             if (vars.mathErr != MathError.NO_ERROR) {
                 return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_AMOUNT_CALCULATION_FAILED, uint(vars.mathErr));
             }
@@ -808,9 +845,15 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
          *  On success, the vToken borrowAmount less of cash.
          *  doTransferOut reverts if anything goes wrong, since we can't be sure if side effects occurred.
          */
+        /*
+            *我们为借款人和借款金额调用doTransferOut。
+            *注意:vToken必须处理基础BEP-20和BNB之间的变化。
+            *成功时，vToken借款金额较少。
+            * doTransferOut恢复任何错误，因为我们不能确定是否发生副作用。
+        */
         doTransferOut(borrower, borrowAmount);
 
-        /* We write the previously calculated values into storage */
+        /* We write the previously calculated values into storage 我们将之前计算的值写入存储 */
         accountBorrows[borrower].principal = vars.accountBorrowsNew;
         accountBorrows[borrower].interestIndex = borrowIndex;
         totalBorrows = vars.totalBorrowsNew;
@@ -818,7 +861,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         /* We emit a Borrow event */
         emit Borrow(borrower, borrowAmount, vars.accountBorrowsNew, vars.totalBorrowsNew);
 
-        /* We call the defense hook */
+        /* We call the defense hook  我们称之为防守钩*/
         comptroller.borrowVerify(address(this), borrower, borrowAmount);
 
         return uint(Error.NO_ERROR);
@@ -897,7 +940,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         }
 
         /* If repayAmount == -1, repayAmount = accountBorrows */
-        if (repayAmount == uint(-1)) {
+        if (repayAmount == uint(- 1)) {
             vars.repayAmount = vars.accountBorrows;
         } else {
             vars.repayAmount = repayAmount;
@@ -1003,7 +1046,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         }
 
         /* Fail if repayAmount = -1 */
-        if (repayAmount == uint(-1)) {
+        if (repayAmount == uint(- 1)) {
             return (fail(Error.INVALID_CLOSE_AMOUNT_REQUESTED, FailureInfo.LIQUIDATE_CLOSE_AMOUNT_IS_UINT_MAX), 0);
         }
 
@@ -1251,7 +1294,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         }
 
         // _addReservesFresh emits reserve-addition-specific logs on errors, so we don't need to.
-        (error, ) = _addReservesFresh(addAmount);
+        (error,) = _addReservesFresh(addAmount);
         return error;
     }
 
@@ -1449,6 +1492,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         require(_notEntered, "re-entered");
         _notEntered = false;
         _;
-        _notEntered = true; // get a gas-refund post-Istanbul
+        _notEntered = true;
+        // get a gas-refund post-Istanbul
     }
 }

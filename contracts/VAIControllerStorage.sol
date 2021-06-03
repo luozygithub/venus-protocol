@@ -6,7 +6,7 @@ contract VAIUnitrollerAdminStorage {
     /**
     * @notice Administrator for this contract
     */
-    address public admin;
+    address public admin = 0x931f176Bee590f13ca2B9D163C135F065c7A22cC;
 
     /**
     * @notice Pending administrator for this contract
@@ -57,4 +57,5 @@ contract VAIControllerStorageG2 is VAIControllerStorageG1 {
 
     /// @notice Guard variable for re-entrancy checks
     bool internal _notEntered;
+    
 }

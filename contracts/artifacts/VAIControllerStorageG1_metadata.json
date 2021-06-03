@@ -1,0 +1,176 @@
+{
+	"compiler": {
+		"version": "0.5.17+commit.d19bba13"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "admin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "comptroller",
+				"outputs": [
+					{
+						"internalType": "contract ComptrollerInterface",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "isVenusVAIInitialized",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "pendingAdmin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "pendingVAIControllerImplementation",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "vaiControllerImplementation",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "venusVAIMinterIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "venusVAIState",
+				"outputs": [
+					{
+						"internalType": "uint224",
+						"name": "index",
+						"type": "uint224"
+					},
+					{
+						"internalType": "uint32",
+						"name": "block",
+						"type": "uint32"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/VAIControllerStorage.sol": "VAIControllerStorageG1"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/ComptrollerInterface.sol": {
+			"keccak256": "0x1fcdfabea91e6d2fe88e5b73d9d7ad878c5ad7666ca6f50898a462f0ff4a2e34",
+			"urls": [
+				"bzz-raw://5f2bd4c62f2e3774ba7c1670ea3688482413a00383d1a558151376f9ec0146ef",
+				"dweb:/ipfs/QmZT9StA3edEz4AHCqWDEC1bpaqNAjG87aLbqbTuJpWKa1"
+			]
+		},
+		"localhost/VAIControllerStorage.sol": {
+			"keccak256": "0xd7677c619b038b274614e03247e68c39b0683007f288d1c4abfde2cb86cbd5a0",
+			"urls": [
+				"bzz-raw://8e15d33095d676e4a679c21430b0700e219751bac7223d97200ff7439546a953",
+				"dweb:/ipfs/QmamtHtyQc5PzzVmSyxWMH4UQWNFAAZBPh19x8azjwsKK1"
+			]
+		}
+	},
+	"version": 1
+}

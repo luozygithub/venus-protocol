@@ -1,0 +1,72 @@
+{
+	"compiler": {
+		"version": "0.5.17+commit.d19bba13"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "treasuryAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "treasuryPercent",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {
+				"treasuryAddress()": {
+					"notice": "* Treasury Data **"
+				}
+			}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/ComptrollerInterface.sol": "IComptroller"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/ComptrollerInterface.sol": {
+			"keccak256": "0x1fcdfabea91e6d2fe88e5b73d9d7ad878c5ad7666ca6f50898a462f0ff4a2e34",
+			"urls": [
+				"bzz-raw://5f2bd4c62f2e3774ba7c1670ea3688482413a00383d1a558151376f9ec0146ef",
+				"dweb:/ipfs/QmZT9StA3edEz4AHCqWDEC1bpaqNAjG87aLbqbTuJpWKa1"
+			]
+		}
+	},
+	"version": 1
+}

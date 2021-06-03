@@ -7,6 +7,11 @@ import "./VBep20Delegate.sol";
  * @notice VToken which wraps Multi-Collateral DAI
  * @author Venus
  */
+ /*
+    * @title Venus的VDai合同
+    * @notice VToken包装多抵押品DAI
+    * @author金星
+ */
 contract VDaiDelegate is VBep20Delegate {
     /**
      * @notice DAI adapter address

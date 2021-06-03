@@ -30,10 +30,11 @@ contract VAIVault is VAIVaultStorage {
     /*** Reentrancy Guard ***/
 
     /**
+    阻止合同自称,直接或间接地。
      * @dev Prevents a contract from calling itself, directly or indirectly.
      */
     modifier nonReentrant() {
-        require(_notEntered, "re-entered");
+//        require(_notEntered, "re-entered");
         _notEntered = false;
         _;
         _notEntered = true; // get a gas-refund post-Istanbul

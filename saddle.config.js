@@ -7,13 +7,12 @@ module.exports = {
   ],
   solc_shell_args: {                                        // Args passed to `exec`, see:
     maxBuffer: 1024 * 500000,                               // https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
-    shell: process.env['SADDLE_SHELL'] || '/bin/bash'
   },
   // build_dir: ".build",                                   // Directory to place built contracts
   extra_build_files: ['remote/*.json'],                     // Additional build files to deep merge
   // coverage_dir: "coverage",                              // Directory to place coverage files
   // coverage_ignore: [],                                   // List of files to ignore for coverage
-  contracts: process.env['SADDLE_CONTRACTS'] || "{contracts,contracts/**,tests/Contracts}/*.sol",
+  contracts:  "{contracts,contracts/**,tests/Contracts}/*.sol",
                                                             // Glob to match contract files
   trace: false,                                             // Compile with debug artifacts
   // TODO: Separate contracts for test?

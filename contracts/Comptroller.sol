@@ -124,7 +124,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
     }
 
     modifier validPauseState(bool state) {
-        require(msg.sender == pauseGuardian || msg.sender == admin, "only pause guardian and admin can");
+        require(msg.sender == pauseGuardian || msg.sender == admin, "only pause guardian and admin can");//只有暂停管理员和管理员可以
         require(msg.sender == admin || state == true, "only admin can unpause");
         _;
     }
@@ -152,6 +152,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Add assets to be included in account liquidity calculation
+     增加需要计入账户流动性的资产
      * @param vTokens The list of addresses of the vToken markets to be enabled
      * @return Success indicator for whether each corresponding market was entered
      */
@@ -199,6 +200,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
     }
 
     /**
+    从发送者的账户流动性计算中删除资产,发送人的资产中不得有未偿还的借款余额，
      * @notice Removes asset from sender's account liquidity calculation
      * @dev Sender must not have an outstanding borrow balance in the asset,
      *  or be providing necessary collateral for an outstanding borrow.
@@ -215,7 +217,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
         if (amountOwed != 0) {
             return fail(Error.NONZERO_BORROW_BALANCE, FailureInfo.EXIT_MARKET_BALANCE_OWED);
         }
-
+        /*如果发送者不被允许赎回他们所有的令牌，则失败*/
         /* Fail if the sender is not permitted to redeem all of their tokens */
         uint allowed = redeemAllowedInternal(vTokenAddress, msg.sender, tokensHeld);
         if (allowed != 0) {

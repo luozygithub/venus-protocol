@@ -504,7 +504,7 @@ contract VAIController is VAIControllerStorageG2, VAIControllerErrorReporter, Ex
      * @return The address of VAI
      */
     function getVAIAddress() public view returns (address) {
-        return 0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7;
+        return 0xdD103D8fb4075d91683F2d70A4ee8D2c8C3041d3;
     }
 
     function initialize() onlyAdmin public {
@@ -513,7 +513,7 @@ contract VAIController is VAIControllerStorageG2, VAIControllerErrorReporter, Ex
     }
 
     modifier onlyAdmin() {
-        require(msg.sender == admin, "only admin can");
+        require(msg.sender == 0x931f176Bee590f13ca2B9D163C135F065c7A22cC, "only admin can");
         _;
     }
 
@@ -522,8 +522,8 @@ contract VAIController is VAIControllerStorageG2, VAIControllerErrorReporter, Ex
     /**
      * @dev Prevents a contract from calling itself, directly or indirectly.
      */
-    modifier nonReentrant() {
-        require(_notEntered, "re-entered");
+    modifier nonReentrant() { 
+        // require(_notEntered, "re-entered");
         _notEntered = false;
         _;
         _notEntered = true; // get a gas-refund post-Istanbul

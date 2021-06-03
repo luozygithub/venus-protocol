@@ -107,9 +107,11 @@ contract SXP is BEP20Interface, Tokenlock, UserLock {
     }
 
     /// @notice A record of votes checkpoints for each account, by index
+//   记录每个帐户 的 选票,通过索引
     mapping (address => mapping (uint32 => Checkpoint)) public checkpoints;
 
     /// @notice The number of checkpoints for each account
+    //    检查点的数量为每个帐户
     mapping (address => uint32) public numCheckpoints;
 
     /// @notice The EIP-712 typehash for the contract's domain
@@ -339,26 +341,30 @@ contract SXP is BEP20Interface, Tokenlock, UserLock {
     function getPriorVotes(address account, uint256 blockNumber) public view returns (uint96) {
         require(blockNumber < block.number, "Not determined yet");
 
-        uint32 nCheckpoints = numCheckpoints[account];
+        uint32 nCheckpoints = numCheckpoints[account]; //索引
         if (nCheckpoints == 0) {
             return 0;
         }
 
         // First check most recent balance
+//        首先检查最近的 票数
         if (checkpoints[account][nCheckpoints - 1].fromBlock <= blockNumber) {
             return ceil96(checkpoints[account][nCheckpoints - 1].votes);
         }
 
         // Next check implicit zero balance
+//        接下来检查隐式零平衡
         if (checkpoints[account][0].fromBlock > blockNumber) {
             return 0;
         }
-
+//
         uint32 lower = 0;
         uint32 upper = nCheckpoints - 1;
+//        二分查找
         while (upper > lower) {
             uint32 center = upper - (upper - lower) / 2; // ceil, avoiding overflow
-            Checkpoint memory cp = checkpoints[account][center];
+            Checkpoint memory cp = checkpoints[account][center]; //当前用户下 当前索引 记录的区块
+            // 如果区块相等 返回数据
             if (cp.fromBlock == blockNumber) {
                 return ceil96(cp.votes);
             } else if (cp.fromBlock < blockNumber) {
@@ -429,11 +435,13 @@ contract SXP is BEP20Interface, Tokenlock, UserLock {
 
     function _writeCheckpoint(address delegatee, uint32 nCheckpoints, uint256 oldVotes, uint256 newVotes) internal {
       uint32 blockNumber = safe32(block.number, "The block number exceeds 32 bits");
-
+        //如果当前索引 》0 ， 并且 当前地址下 checkpoints数组 对应索引下fromBlock 不等于现在区块高度的话 进行赋值
       if (nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber) {
           checkpoints[delegatee][nCheckpoints - 1].votes = newVotes;
       } else {
+// 记录票数 ， 区块高度
           checkpoints[delegatee][nCheckpoints] = Checkpoint(blockNumber, newVotes);
+//          记录索引
           numCheckpoints[delegatee] = nCheckpoints + 1;
       }
 

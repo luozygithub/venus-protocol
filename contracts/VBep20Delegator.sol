@@ -223,6 +223,12 @@ contract VBep20Delegator is VTokenInterface, VBep20Interface, VDelegatorInterfac
      * @param account Address of the account to snapshot
      * @return (possible error, token balance, borrow balance, exchange rate mantissa)
      */
+    /*
+        * @notice获取账户余额的快照，以及缓存的汇率
+        * @dev这是审计员用来更有效地执行流动性检查。
+        * @param account待快照的帐号地址
+        * @return(可能的错误，代币余额，借款余额，汇率尾数)
+    */
     function getAccountSnapshot(address account) external view returns (uint, uint, uint, uint) {
         bytes memory data = delegateToViewImplementation(abi.encodeWithSignature("getAccountSnapshot(address)", account));
         return abi.decode(data, (uint, uint, uint, uint));

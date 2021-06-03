@@ -1,0 +1,614 @@
+{
+	"compiler": {
+		"version": "0.5.17+commit.d19bba13"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "error",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "info",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "detail",
+						"type": "uint256"
+					}
+				],
+				"name": "Failure",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "minter",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "mintVAIAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "MintVAI",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "contract ComptrollerInterface",
+						"name": "oldComptroller",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "contract ComptrollerInterface",
+						"name": "newComptroller",
+						"type": "address"
+					}
+				],
+				"name": "NewComptroller",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "repayer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "repayVAIAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "RepayVAI",
+				"type": "event"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "contract VAIUnitroller",
+						"name": "unitroller",
+						"type": "address"
+					}
+				],
+				"name": "_become",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "blockNumber",
+						"type": "uint256"
+					}
+				],
+				"name": "_initializeVenusVAIState",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "contract ComptrollerInterface",
+						"name": "comptroller_",
+						"type": "address"
+					}
+				],
+				"name": "_setComptroller",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "admin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "vaiMinter",
+						"type": "address"
+					}
+				],
+				"name": "calcDistributeVAIMinterVenus",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "comptroller",
+				"outputs": [
+					{
+						"internalType": "contract ComptrollerInterface",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "getBlockNumber",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "minter",
+						"type": "address"
+					}
+				],
+				"name": "getMintableVAI",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "getVAIAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "isVenusVAIInitialized",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "mintVAIAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "mintVAI",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "pendingAdmin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "pendingVAIControllerImplementation",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "repayVAIAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "repayVAI",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "updateVenusVAIMintIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "vaiControllerImplementation",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "venusInitialIndex",
+				"outputs": [
+					{
+						"internalType": "uint224",
+						"name": "",
+						"type": "uint224"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "venusVAIMinterIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "venusVAIState",
+				"outputs": [
+					{
+						"internalType": "uint224",
+						"name": "index",
+						"type": "uint224"
+					},
+					{
+						"internalType": "uint32",
+						"name": "block",
+						"type": "uint32"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "Venus",
+			"methods": {
+				"_setComptroller(address)": {
+					"details": "Admin function to set a new comptroller",
+					"return": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)"
+				},
+				"calcDistributeVAIMinterVenus(address)": {
+					"params": {
+						"vaiMinter": "The address of the VAI minter to distribute XVS to"
+					}
+				},
+				"getVAIAddress()": {
+					"return": "The address of VAI"
+				}
+			},
+			"title": "Venus's VAI Comptroller Contract"
+		},
+		"userdoc": {
+			"methods": {
+				"_initializeVenusVAIState(uint256)": {
+					"notice": "Initialize the VenusVAIState"
+				},
+				"_setComptroller(address)": {
+					"notice": "Sets a new comptroller"
+				},
+				"calcDistributeVAIMinterVenus(address)": {
+					"notice": "Calculate XVS accrued by a VAI minter"
+				},
+				"getVAIAddress()": {
+					"notice": "Return the address of the VAI token"
+				},
+				"mintVAI(uint256)": {
+					"notice": "* Main Actions **"
+				},
+				"repayVAI(uint256)": {
+					"notice": "Repay VAI"
+				},
+				"updateVenusVAIMintIndex()": {
+					"notice": "Accrue XVS to by updating the VAI minter index"
+				}
+			}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/VAIControllerG1.sol": "VAIControllerG1"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/CarefulMath.sol": {
+			"keccak256": "0x855f65e2bd271e114555e71a10c3b3276ab70643c0c96a452b3493423de474a4",
+			"urls": [
+				"bzz-raw://b9d5e4067644205b15f4a0070c94780c512a33112f1e72637ea65525f3e080e8",
+				"dweb:/ipfs/QmS4TLNXX5DwLnidByLioGgT1bnF5KEDcjTjy73v5FsEQa"
+			]
+		},
+		"localhost/ComptrollerInterface.sol": {
+			"keccak256": "0x9d9c9227a6f4d807e796b2ec7413c950a69ab80608d95b749796685f044f2177",
+			"urls": [
+				"bzz-raw://11fa6359da8c3b18a79b36bfd9ee27be212d97452565875d191f33f0b21842eb",
+				"dweb:/ipfs/QmNvXsydqZib55x3KPuhWyEwpvfPERNhZd5iDX5BWzyejx"
+			]
+		},
+		"localhost/EIP20Interface.sol": {
+			"keccak256": "0x33c5c2c7a45637618ec3ff2741c6902c356ef9ced300a0779edb5238791bf70f",
+			"urls": [
+				"bzz-raw://6d7d44e49e90351ac4ffb3e23fb8cded5fe16ee97bd0a7574dce5b5c62289db5",
+				"dweb:/ipfs/QmUDjHJG2jmsoCur474avy3VKEr3iT6yoXAaHyrzgfPA7y"
+			]
+		},
+		"localhost/EIP20NonStandardInterface.sol": {
+			"keccak256": "0x210d80c5343b519cbb0745bc5c7157b79100c5870c80a90596bbeff9186c2b5c",
+			"urls": [
+				"bzz-raw://2424ab90dcf8fc6b636607c4acc3128b6594a23b04d0a93940f8195b5197deca",
+				"dweb:/ipfs/QmaP5BpefdErChAJGyxKbLgLcw15M2r352hLNdVZg4aW3o"
+			]
+		},
+		"localhost/ErrorReporter.sol": {
+			"keccak256": "0x08bdc77bdcb6954ce9d0367de18184644f30afdc959f54e226788e8813ea3654",
+			"urls": [
+				"bzz-raw://b84c52005a8ec879ef1423aa5b32a1d3fba8f3ecf78a25f99577b2442034e50c",
+				"dweb:/ipfs/QmWWPGHww76gi8DEceCg4W7GwD4djpkGU3rsW9X1CTFXfr"
+			]
+		},
+		"localhost/Exponential.sol": {
+			"keccak256": "0x9f441978e19b6e2788386a713bbe330345d98a782da025f583d9dbdb716ab745",
+			"urls": [
+				"bzz-raw://44f8c6abe0bbf1ae08e790b80cb1827d42dd3baa9eea22a4343eb4ca6cf90693",
+				"dweb:/ipfs/Qmc6kAB41xwr3Jywhu17vjMGtCbq5j7bB1uZhZigjnceZB"
+			]
+		},
+		"localhost/ExponentialNoError.sol": {
+			"keccak256": "0x1ed4e4fc1926f2db120798edbd049838c4d47fdbf3416a9aeb4a91ae1872dfc7",
+			"urls": [
+				"bzz-raw://28ad9ce6f1d69a722ab37fd0d1acbf49eddcbf9b7452709f6e41b1d57ed89286",
+				"dweb:/ipfs/Qmah2P2yciY8QYGUp5yG7EoJP4TNM1LZkyuWWAMuPUR6Xy"
+			]
+		},
+		"localhost/InterestRateModel.sol": {
+			"keccak256": "0x5c9db9f1b8de79d4a3780a4475f92028794e36829d82b587339db3afd415d4e3",
+			"urls": [
+				"bzz-raw://b4b605dd8d76d33b8dfce0885ddec7ef91518706108064c901bdcc3f21d2c6f2",
+				"dweb:/ipfs/QmQ53KgdUoprraEc3Ns9a9PRzT3MZMaHzqHfdre48X5wjX"
+			]
+		},
+		"localhost/PriceOracle.sol": {
+			"keccak256": "0x1da723eb84ea9aa8431516821895f531150bb490fcc442b29f26428e3409083f",
+			"urls": [
+				"bzz-raw://525c2053663f15bffb2f46322601836709c842783478c2579732ddb88afb6b61",
+				"dweb:/ipfs/QmbjTsHUNRZeCscfHS4KcvCs25wZNky3ExCvXaVr17hHAi"
+			]
+		},
+		"localhost/VAI/VAI.sol": {
+			"keccak256": "0xcca4f89c1c5f9e76dad4d62eda962c4a02c2b2a8ee06af101cbfe7bb1da6b14a",
+			"urls": [
+				"bzz-raw://dd91f008138b74990c9542715f9c5f0bcd4f557979499ee37202a331d8ba834f",
+				"dweb:/ipfs/QmS3HgBoGWnRRv2gYyzVB2HRiMZvJ3sn2vPDznz4ikU7Uk"
+			]
+		},
+		"localhost/VAI/lib.sol": {
+			"keccak256": "0x9664fcab8e6e944b2f5dd5424731e3a0d015df22b7c86467e5641732a1b71efd",
+			"urls": [
+				"bzz-raw://343de05aad0fd68430243811f836150d080ada8b578b4b67bc6a2bae8566d8ef",
+				"dweb:/ipfs/QmcrQT61unQmbNeC8K7QnQqoCC5ph1VBWAGDG1drd7okfx"
+			]
+		},
+		"localhost/VAIControllerG1.sol": {
+			"keccak256": "0x5c4fc569fe2c5d01e7666f4566ef5ef010390a6d4f491976b82f0aa18acff698",
+			"urls": [
+				"bzz-raw://7fc280498849492624a6b754b564f977dd5b19ae7671c23df9b499324e670380",
+				"dweb:/ipfs/QmNP4GwNqkybT35Ez95Ue5yxFeW7mZvprYEboW7oGcWYUu"
+			]
+		},
+		"localhost/VAIControllerStorage.sol": {
+			"keccak256": "0xd7677c619b038b274614e03247e68c39b0683007f288d1c4abfde2cb86cbd5a0",
+			"urls": [
+				"bzz-raw://8e15d33095d676e4a679c21430b0700e219751bac7223d97200ff7439546a953",
+				"dweb:/ipfs/QmamtHtyQc5PzzVmSyxWMH4UQWNFAAZBPh19x8azjwsKK1"
+			]
+		},
+		"localhost/VAIUnitroller.sol": {
+			"keccak256": "0x2ff51a0e14efdebf581b2a9d123b4dc3cf197d2ccca2401875c5104a355ca67c",
+			"urls": [
+				"bzz-raw://a4f504c3816051659f3c27732f17d0c47b7961b3cb20255fd8c923f677f85f4c",
+				"dweb:/ipfs/Qmc7xPrAmEXJkpoaAb65RRHGnDvuFK164fd2Vx7eX4B6eT"
+			]
+		},
+		"localhost/VToken.sol": {
+			"keccak256": "0x479ea852cd29203c51e7dcea466c0f024332688ecc2e0733444b98bd35cc22af",
+			"urls": [
+				"bzz-raw://2460e893ba00c1c503f9784d1c661aa67f1488147208aa237886f2054e27f6ba",
+				"dweb:/ipfs/QmPvadkRt69pcYFeoYebtQs6sE6Xb1qZrQz14B1XuvCDmn"
+			]
+		},
+		"localhost/VTokenInterfaces.sol": {
+			"keccak256": "0x3b920718cbc8158be17f257eca7c2f69d69f3c7c2e0baa55cd3081895c392a13",
+			"urls": [
+				"bzz-raw://39ac71afca655632277ccfa559e4d15cc5286793fa7fd0e0b264c86e576275c7",
+				"dweb:/ipfs/QmZPJHmxge4Ujn4GYGTRWcxEjY1p2huP63fjyVoGBJsP4X"
+			]
+		}
+	},
+	"version": 1
+}

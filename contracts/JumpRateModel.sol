@@ -60,14 +60,8 @@ contract JumpRateModel is InterestRateModel {
      * @param reserves The amount of reserves in the market (currently unused)
      * @return The utilization rate as a mantissa between [0, 1e18]
      */
-    function utilizationRate(uint cash, uint borrows, uint reserves) public pure returns (uint) {
-        // Utilization rate is 0 when there are no borrows
-        if (borrows == 0) {
-            return 0;
-        }
+    /*
 
-        return borrows.mul(1e18).div(cash.add(borrows).sub(reserves));
-    }
 
     /**
      * @notice Calculates the current borrow rate per block, with the error code expected by the market

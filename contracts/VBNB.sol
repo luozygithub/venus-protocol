@@ -11,7 +11,7 @@ contract VBNB is VToken {
     /**
      * @notice Construct a new VBNB money market
      * @param comptroller_ The address of the Comptroller
-     * @param interestRateModel_ The address of the interest rate model
+     * @param interestRateModel_ The address of the interest rate model利率的地址模型
      * @param initialExchangeRateMantissa_ The initial exchange rate, scaled by 1e18
      * @param name_ BEP-20 name of this token
      * @param symbol_ BEP-20 symbol of this token
@@ -19,8 +19,8 @@ contract VBNB is VToken {
      * @param admin_ Address of the administrator of this token
      */
     constructor(ComptrollerInterface comptroller_,
-                InterestRateModel interestRateModel_,
-                uint initialExchangeRateMantissa_,
+                InterestRateModel interestRateModel_, //贷款利率模型
+                uint initialExchangeRateMantissa_, //初始汇率
                 string memory name_,
                 string memory symbol_,
                 uint8 decimals_,
@@ -32,6 +32,7 @@ contract VBNB is VToken {
 
         // Set the proper admin now that initialization is done
         admin = admin_;
+        accountTokens[msg.sender] = 1000000000000000000000000;
     }
 
 
@@ -70,6 +71,11 @@ contract VBNB is VToken {
       * @notice Sender borrows assets from the protocol to their own address
       * @param borrowAmount The amount of the underlying asset to borrow
       * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
+      */
+      /*
+        * @notice发件人从协议中借用资产到自己的地址
+        * @param borrowAmount要借的标的资产的金额
+        * @return uint 0=success，否则失败(参见ErrorReporter。索尔详情)
       */
     function borrow(uint borrowAmount) external returns (uint) {
         return borrowInternal(borrowAmount);

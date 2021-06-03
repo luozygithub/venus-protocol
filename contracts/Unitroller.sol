@@ -6,6 +6,8 @@ import "./ComptrollerStorage.sol";
  * @title ComptrollerCore
  * @dev Storage for the comptroller is at this address, while execution is delegated to the `comptrollerImplementation`.
  * VTokens should reference this contract as their comptroller.
+ *  @title ComptrollerCore * @dev存储的审计是在这个地址,而执行是委托给“comptrollerImplementation”。
+* VTokens应该参考本合同作为他们的审计。
  */
 contract Unitroller is UnitrollerAdminStorage, ComptrollerErrorReporter {
 

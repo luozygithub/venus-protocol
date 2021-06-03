@@ -78,6 +78,7 @@ contract ComptrollerInterfaceG2 is ComptrollerInterfaceG1 {
 }
 
 contract ComptrollerInterface is ComptrollerInterfaceG2 {
+     
 }
 
 interface IVAIVault {

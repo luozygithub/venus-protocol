@@ -270,9 +270,10 @@ contract ComptrollerG3 is ComptrollerV3Storage, ComptrollerInterfaceG1, Comptrol
      */
     function mintAllowed(address vToken, address minter, uint mintAmount) external onlyProtocolAllowed returns (uint) {
         // Pausing is a very serious situation - we revert to sound the alarms
+        // 暂停是一种非常严重的情况-我们恢复发出警报
         require(!mintGuardianPaused[vToken], "mint is paused");
 
-        // Shh - currently unused
+        // Shh - currently unused :  Shh -目前未使用
         mintAmount;
 
         if (!markets[vToken].isListed) {
@@ -365,6 +366,13 @@ contract ComptrollerG3 is ComptrollerV3Storage, ComptrollerInterfaceG1, Comptrol
      * @param borrower The account which would borrow the asset
      * @param borrowAmount The amount of underlying the account would borrow
      * @return 0 if the borrow is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
+     */
+     /*
+        * @notice检查该帐户是否应获准借入指定市场的标的资产
+        * @param vToken要验证借出的市场
+        * @param借款人将借资产的帐户
+        * @param borrowAmount账户将借的金额
+        * @return 0如果允许借，否则是半不透明的错误代码(参见ErrorReporter.sol)
      */
     function borrowAllowed(address vToken, address borrower, uint borrowAmount) external onlyProtocolAllowed returns (uint) {
         // Pausing is a very serious situation - we revert to sound the alarms
@@ -1058,6 +1066,12 @@ contract ComptrollerG3 is ComptrollerV3Storage, ComptrollerInterfaceG1, Comptrol
       * @param vTokens The addresses of the markets (tokens) to change the borrow caps for
       * @param newBorrowCaps The new borrow cap values in underlying to be set. A value of 0 corresponds to unlimited borrowing.
       */
+      /*
+        * @notice为给定的vToken市场设置给定的借款上限。使借款总额达到或超过借款上限的借款将会恢复。
+        * @dev Admin或borrowCapGuardian功能来设置借帽。借出上限为0对应的是无限制的借出。
+        * @param vTokens要更改借出上限的市场(token)地址
+        * @param newBorrowCaps将被设置的新的借款上限。值为0对应无限量借款。
+      */
     function _setMarketBorrowCaps(VToken[] calldata vTokens, uint[] calldata newBorrowCaps) external {
     	require(msg.sender == admin || msg.sender == borrowCapGuardian, "only admin or borrow cap guardian can set borrow caps");
 
@@ -1439,7 +1453,7 @@ contract ComptrollerG3 is ComptrollerV3Storage, ComptrollerInterfaceG1, Comptrol
      * @return The address of XVS
      */
     function getXVSAddress() public view returns (address) {
-        return 0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63;
+        return 0x834a0a99698a8f0371B3b5a5d54D7ff5228BE219;
     }
 
     /*** VAI functions ***/
@@ -1481,6 +1495,7 @@ contract ComptrollerG3 is ComptrollerV3Storage, ComptrollerInterfaceG1, Comptrol
         uint256 actualAmount;
         uint256 deltaBlocks = sub_(getBlockNumber(), releaseStartBlock);
         // releaseAmount = venusVAIVaultRate * deltaBlocks
+        // 释放量 = 利率 * 区块间隔 
         uint256 _releaseAmount = mul_(venusVAIVaultRate, deltaBlocks);
 
         if (_releaseAmount < minReleaseAmount) {
