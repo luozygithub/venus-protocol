@@ -1,0 +1,498 @@
+{
+	"compiler": {
+		"version": "0.5.17+commit.d19bba13"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "oldAdmin",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newAdmin",
+						"type": "address"
+					}
+				],
+				"name": "AdminTransfered",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Deposit",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Withdraw",
+				"type": "event"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "contract VAIVaultProxy",
+						"name": "vaiVaultProxy",
+						"type": "address"
+					}
+				],
+				"name": "_become",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "accXVSPerShare",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "admin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "burnAdmin",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "claim",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "deposit",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "getAdmin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "pendingAdmin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "pendingRewards",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "pendingVAIVaultImplementation",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					}
+				],
+				"name": "pendingXVS",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newAdmin",
+						"type": "address"
+					}
+				],
+				"name": "setNewAdmin",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_xvs",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_vai",
+						"type": "address"
+					}
+				],
+				"name": "setVenusInfo",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "updatePendingRewards",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "userInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "rewardDebt",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "vai",
+				"outputs": [
+					{
+						"internalType": "contract IBEP20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "vaiVaultImplementation",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "withdraw",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "xvs",
+				"outputs": [
+					{
+						"internalType": "contract IBEP20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "xvsBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {
+				"burnAdmin()": {
+					"details": "Burn the current admin"
+				},
+				"deposit(uint256)": {
+					"params": {
+						"_amount": "The amount to deposit to vault"
+					}
+				},
+				"getAdmin()": {
+					"details": "Returns the address of the current admin"
+				},
+				"pendingXVS(address)": {
+					"params": {
+						"_user": "The user to see pending XVS"
+					}
+				},
+				"setNewAdmin(address)": {
+					"details": "Set the current admin to new address"
+				},
+				"withdraw(uint256)": {
+					"params": {
+						"_amount": "The amount to withdraw from vault"
+					}
+				}
+			}
+		},
+		"userdoc": {
+			"methods": {
+				"_become(address)": {
+					"notice": "* Admin Functions **"
+				},
+				"claim()": {
+					"notice": "Claim XVS from VAIVault"
+				},
+				"deposit(uint256)": {
+					"notice": "Deposit VAI to VAIVault for XVS allocation"
+				},
+				"pendingXVS(address)": {
+					"notice": "View function to see pending XVS on frontend"
+				},
+				"updatePendingRewards()": {
+					"notice": "Function that updates pending rewards"
+				},
+				"withdraw(uint256)": {
+					"notice": "Withdraw VAI from VAIVault"
+				}
+			}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/Vault/VAIVault.sol": "VAIVault"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/Vault/Address.sol": {
+			"keccak256": "0x9d1fa802b90f8ac9339ec8e17d54793c42b6f6b5111832143cdf79762f577ec8",
+			"urls": [
+				"bzz-raw://7ec7ed16c47106baed01b16c2e260aa7fe39a28de053224b495f525dfa1cd43d",
+				"dweb:/ipfs/QmdkHfiYV3YQJtQi3tM6cSQYfWdKYUsGqrFTUmPCq6zS3K"
+			]
+		},
+		"localhost/Vault/IBEP20.sol": {
+			"keccak256": "0xa3a8f9954c8785aace7fde96102415fa4de1970920315652e3496b1c2b8dd965",
+			"urls": [
+				"bzz-raw://d364ccc021889cda5e9d5ff2a630461f0916247c41aa546e07f4b0da5802f318",
+				"dweb:/ipfs/QmQFmYdUWj7tQv2arRzdoziVXCixVRHnXg93vjSN1dsgvD"
+			]
+		},
+		"localhost/Vault/SafeBEP20.sol": {
+			"keccak256": "0x80a537e0bfa50067c3ef015f49aceb4e4ce30ae3069d40977aaa95911916224d",
+			"urls": [
+				"bzz-raw://923cc5c882504361d79cb2a91c1d8eade0b1a0c3bc1570153481d1da407fbf18",
+				"dweb:/ipfs/QmYqJFUrCpTfh7Vm7i3ExE9iTTmaiwGtye19Skkj2T3qBF"
+			]
+		},
+		"localhost/Vault/SafeMath.sol": {
+			"keccak256": "0xeb295b448107f6adee6c0861eba7cd58983eeb1a2bf9cd24b3df9c75fe17db75",
+			"urls": [
+				"bzz-raw://781a662595af8ecda052135a27529293189c1cdf40bc5e2934a62b3bc2b327ea",
+				"dweb:/ipfs/QmNaGn5PyRCu3tfBu6mMwx3j2BHJiXWKiYGHSAu3au6P7S"
+			]
+		},
+		"localhost/Vault/VAIVault.sol": {
+			"keccak256": "0xebad8c555119c5cd570b25f2576c20dacda78179c2db38e6e949f09c21581785",
+			"urls": [
+				"bzz-raw://a13c29baedd4e8d32af593e8c5932708c00ec5279877844ef79e4f82bde15dd6",
+				"dweb:/ipfs/Qmf3FBZD9r2HZC1zthuzxKkEtufaD2WJfEBh4VSn1NZRRz"
+			]
+		},
+		"localhost/Vault/VAIVaultErrorReporter.sol": {
+			"keccak256": "0x6c0740cbb10c99f76a9a92054ffe1ee64fd359b0451dea2194000a904838dec7",
+			"urls": [
+				"bzz-raw://5591372e92a158ce57134275fbda4232edb2422cb969a2fc2bd1e9737472f386",
+				"dweb:/ipfs/QmNeEwWtH4bmfTVXCbazFFwrcS6hAYE5ou6T3YTi2xotR1"
+			]
+		},
+		"localhost/Vault/VAIVaultProxy.sol": {
+			"keccak256": "0xabc147424d246023c4f22204d4dc9d027369df19560ca2d75853c83367f90d86",
+			"urls": [
+				"bzz-raw://85b1a23479605e7fcb5967460f0d1a55de31a9a636e4273831472617d957c514",
+				"dweb:/ipfs/Qmajc3n3dCLhFxFKjk8pJhxm6DSfAeqELSDr5yGVNBYQdT"
+			]
+		},
+		"localhost/Vault/VAIVaultStorage.sol": {
+			"keccak256": "0x0ccf59a8b45d262c7b10417aba1e820830fa720f5daf62dd5a774b279d855847",
+			"urls": [
+				"bzz-raw://c9776b56e82dcc8cb77a7c2bfb6af3ee65735dae0795f0943caafe89922f0f4e",
+				"dweb:/ipfs/QmQkQGVLQt2qor71Q9rMoCdqvzcHhV5JdDSDAW5QTkhDNZ"
+			]
+		}
+	},
+	"version": 1
+}

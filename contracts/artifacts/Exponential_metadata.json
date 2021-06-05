@@ -1,0 +1,54 @@
+{
+	"compiler": {
+		"version": "0.5.16+commit.9c3226ce"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"author": "Venus",
+			"methods": {},
+			"title": "Exponential module for storing fixed-precision decimals"
+		},
+		"userdoc": {
+			"methods": {},
+			"notice": "Exp is a struct which stores decimals with a fixed precision of 18 decimal places.        Thus, if we wanted to store the 5.1, mantissa would store 5.1e18. That is:        `Exp({mantissa: 5100000000000000000})`."
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/Exponential.sol": "Exponential"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/CarefulMath.sol": {
+			"keccak256": "0x855f65e2bd271e114555e71a10c3b3276ab70643c0c96a452b3493423de474a4",
+			"urls": [
+				"bzz-raw://b9d5e4067644205b15f4a0070c94780c512a33112f1e72637ea65525f3e080e8",
+				"dweb:/ipfs/QmS4TLNXX5DwLnidByLioGgT1bnF5KEDcjTjy73v5FsEQa"
+			]
+		},
+		"localhost/Exponential.sol": {
+			"keccak256": "0x9f441978e19b6e2788386a713bbe330345d98a782da025f583d9dbdb716ab745",
+			"urls": [
+				"bzz-raw://44f8c6abe0bbf1ae08e790b80cb1827d42dd3baa9eea22a4343eb4ca6cf90693",
+				"dweb:/ipfs/Qmc6kAB41xwr3Jywhu17vjMGtCbq5j7bB1uZhZigjnceZB"
+			]
+		},
+		"localhost/ExponentialNoError.sol": {
+			"keccak256": "0x1ed4e4fc1926f2db120798edbd049838c4d47fdbf3416a9aeb4a91ae1872dfc7",
+			"urls": [
+				"bzz-raw://28ad9ce6f1d69a722ab37fd0d1acbf49eddcbf9b7452709f6e41b1d57ed89286",
+				"dweb:/ipfs/Qmah2P2yciY8QYGUp5yG7EoJP4TNM1LZkyuWWAMuPUR6Xy"
+			]
+		}
+	},
+	"version": 1
+}

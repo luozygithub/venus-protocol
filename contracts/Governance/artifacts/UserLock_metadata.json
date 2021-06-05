@@ -1,0 +1,190 @@
+{
+	"compiler": {
+		"version": "0.5.16+commit.9c3226ce"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "who",
+						"type": "address"
+					}
+				],
+				"name": "LockUser",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "who",
+						"type": "address"
+					}
+				],
+				"name": "UnlockUser",
+				"type": "event"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "who",
+						"type": "address"
+					}
+				],
+				"name": "lockUser",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "who",
+						"type": "address"
+					}
+				],
+				"name": "unlockUser",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner.    * NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				}
+			}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/Governance/SXP.sol": "UserLock"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/BEP20Interface.sol": {
+			"keccak256": "0x1129574bab39edbe9e21a925c67b24cd5cdfec082c2b0c0f5fa51c4cc8787cd6",
+			"urls": [
+				"bzz-raw://0a568bf796fec8a4904e6677c15cb7cf574f63e183764c11cae7ac187735e458",
+				"dweb:/ipfs/QmNUusz1pDNXof7uPp6DvFaEPYJ9TmJwTj42CjUrXc1t4w"
+			]
+		},
+		"localhost/Context.sol": {
+			"keccak256": "0xe0a6b3f4da92bce7bb588195bf05a0c760913d3c15883a2e8e8337affa8bb750",
+			"urls": [
+				"bzz-raw://9455d29101e99550f3967d70d5b68ef0b21524a30fa2d8eae574094dcc094cce",
+				"dweb:/ipfs/QmSkuYfRFKdmCWqAMe2BhRsBVPq77gKbho6r7iHx1JtD6S"
+			]
+		},
+		"localhost/Governance/SXP.sol": {
+			"keccak256": "0x0af0485625da86dabda7800fff6b6d87cec95e82e6a8dcf359c0a42162019375",
+			"urls": [
+				"bzz-raw://505afc69eb66027b687571597ff9aa5165e29adbfee64eb14a27092600dadf48",
+				"dweb:/ipfs/QmZFonP5UR1qC3CCswdJsqs6q6gKvgq7AfLLqiA5ap97ny"
+			]
+		},
+		"localhost/Ownable.sol": {
+			"keccak256": "0x067435882bbb20ebb2b0ca8edf38577fbc07dc1228a89f6f4cc5fdfde59fb987",
+			"urls": [
+				"bzz-raw://4fe23edb574db8ecb4454cdbd91aad52c389db67518fd449807a3795474aae4f",
+				"dweb:/ipfs/QmW2NMND8K39xuq4VxdKRCWGmbhrq3nzk23E8DxMwBM27x"
+			]
+		},
+		"localhost/SafeMath.sol": {
+			"keccak256": "0x00d0b81f33cbb3248a19a9813f8cd9c82a942d274e772d0e5f3d3dab94a38018",
+			"urls": [
+				"bzz-raw://6f9bb3bdd490aaff38ec8296558180b132fb6d3fe9a1d801ae24a2eb911c9bb7",
+				"dweb:/ipfs/QmRG2AjEWh2ap9J5wTD15TQR7rFvvMexjSP9A14c6DedZW"
+			]
+		}
+	},
+	"version": 1
+}

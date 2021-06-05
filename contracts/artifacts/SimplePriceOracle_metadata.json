@@ -1,0 +1,250 @@
+{
+	"compiler": {
+		"version": "0.5.16+commit.9c3226ce"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "asset",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "previousPriceMantissa",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "requestedPriceMantissa",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "newPriceMantissa",
+						"type": "uint256"
+					}
+				],
+				"name": "PricePosted",
+				"type": "event"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "asset",
+						"type": "address"
+					}
+				],
+				"name": "assetPrices",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "contract VToken",
+						"name": "vToken",
+						"type": "address"
+					}
+				],
+				"name": "getUnderlyingPrice",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "isPriceOracle",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "asset",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					}
+				],
+				"name": "setDirectPrice",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "contract VToken",
+						"name": "vToken",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "underlyingPriceMantissa",
+						"type": "uint256"
+					}
+				],
+				"name": "setUnderlyingPrice",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/SimplePriceOracle.sol": "SimplePriceOracle"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/CarefulMath.sol": {
+			"keccak256": "0x855f65e2bd271e114555e71a10c3b3276ab70643c0c96a452b3493423de474a4",
+			"urls": [
+				"bzz-raw://b9d5e4067644205b15f4a0070c94780c512a33112f1e72637ea65525f3e080e8",
+				"dweb:/ipfs/QmS4TLNXX5DwLnidByLioGgT1bnF5KEDcjTjy73v5FsEQa"
+			]
+		},
+		"localhost/ComptrollerInterface.sol": {
+			"keccak256": "0x9d9c9227a6f4d807e796b2ec7413c950a69ab80608d95b749796685f044f2177",
+			"urls": [
+				"bzz-raw://11fa6359da8c3b18a79b36bfd9ee27be212d97452565875d191f33f0b21842eb",
+				"dweb:/ipfs/QmNvXsydqZib55x3KPuhWyEwpvfPERNhZd5iDX5BWzyejx"
+			]
+		},
+		"localhost/EIP20Interface.sol": {
+			"keccak256": "0x33c5c2c7a45637618ec3ff2741c6902c356ef9ced300a0779edb5238791bf70f",
+			"urls": [
+				"bzz-raw://6d7d44e49e90351ac4ffb3e23fb8cded5fe16ee97bd0a7574dce5b5c62289db5",
+				"dweb:/ipfs/QmUDjHJG2jmsoCur474avy3VKEr3iT6yoXAaHyrzgfPA7y"
+			]
+		},
+		"localhost/EIP20NonStandardInterface.sol": {
+			"keccak256": "0x210d80c5343b519cbb0745bc5c7157b79100c5870c80a90596bbeff9186c2b5c",
+			"urls": [
+				"bzz-raw://2424ab90dcf8fc6b636607c4acc3128b6594a23b04d0a93940f8195b5197deca",
+				"dweb:/ipfs/QmaP5BpefdErChAJGyxKbLgLcw15M2r352hLNdVZg4aW3o"
+			]
+		},
+		"localhost/ErrorReporter.sol": {
+			"keccak256": "0x08bdc77bdcb6954ce9d0367de18184644f30afdc959f54e226788e8813ea3654",
+			"urls": [
+				"bzz-raw://b84c52005a8ec879ef1423aa5b32a1d3fba8f3ecf78a25f99577b2442034e50c",
+				"dweb:/ipfs/QmWWPGHww76gi8DEceCg4W7GwD4djpkGU3rsW9X1CTFXfr"
+			]
+		},
+		"localhost/Exponential.sol": {
+			"keccak256": "0x9f441978e19b6e2788386a713bbe330345d98a782da025f583d9dbdb716ab745",
+			"urls": [
+				"bzz-raw://44f8c6abe0bbf1ae08e790b80cb1827d42dd3baa9eea22a4343eb4ca6cf90693",
+				"dweb:/ipfs/Qmc6kAB41xwr3Jywhu17vjMGtCbq5j7bB1uZhZigjnceZB"
+			]
+		},
+		"localhost/ExponentialNoError.sol": {
+			"keccak256": "0x1ed4e4fc1926f2db120798edbd049838c4d47fdbf3416a9aeb4a91ae1872dfc7",
+			"urls": [
+				"bzz-raw://28ad9ce6f1d69a722ab37fd0d1acbf49eddcbf9b7452709f6e41b1d57ed89286",
+				"dweb:/ipfs/Qmah2P2yciY8QYGUp5yG7EoJP4TNM1LZkyuWWAMuPUR6Xy"
+			]
+		},
+		"localhost/InterestRateModel.sol": {
+			"keccak256": "0x5c9db9f1b8de79d4a3780a4475f92028794e36829d82b587339db3afd415d4e3",
+			"urls": [
+				"bzz-raw://b4b605dd8d76d33b8dfce0885ddec7ef91518706108064c901bdcc3f21d2c6f2",
+				"dweb:/ipfs/QmQ53KgdUoprraEc3Ns9a9PRzT3MZMaHzqHfdre48X5wjX"
+			]
+		},
+		"localhost/PriceOracle.sol": {
+			"keccak256": "0x1da723eb84ea9aa8431516821895f531150bb490fcc442b29f26428e3409083f",
+			"urls": [
+				"bzz-raw://525c2053663f15bffb2f46322601836709c842783478c2579732ddb88afb6b61",
+				"dweb:/ipfs/QmbjTsHUNRZeCscfHS4KcvCs25wZNky3ExCvXaVr17hHAi"
+			]
+		},
+		"localhost/SimplePriceOracle.sol": {
+			"keccak256": "0x16b57f608b860c06e66266a8586e8823df4b9c6aaec3a0e1e4650458dbbfe29d",
+			"urls": [
+				"bzz-raw://7bbb2a2a7165535c39eb25ef9c203d733ae5c6a4c35c72c55e80f3fe362b69af",
+				"dweb:/ipfs/QmVRAUQTKEG2ffLtneA5tniGxsbGZVa4d2UT1pYuQzVFRa"
+			]
+		},
+		"localhost/VBep20.sol": {
+			"keccak256": "0xa42b6934c82d21652149f0af2c342bc18fc4095a190af52c3fcdf57b6a8a3d80",
+			"urls": [
+				"bzz-raw://1a86c7b58fda734a1b0d0156b52967316e27c22870092244ec714c017a4c2a9c",
+				"dweb:/ipfs/QmeWaJMLapxBfdetCoUfojLzQbEkNgmgezsxvcaR4RnbE1"
+			]
+		},
+		"localhost/VToken.sol": {
+			"keccak256": "0x56a73806551d05d22997cfd8c9633782ec6a518ae67ce890c327ef513049e57f",
+			"urls": [
+				"bzz-raw://c755b2550cc3c399c7f5e58d83430dd0506bfc46c7317262c502c18ccbdd36d6",
+				"dweb:/ipfs/QmbMyarh76YtqSCyAKUVH4STsNwWKo2nnNek6ow1Uv9eFY"
+			]
+		},
+		"localhost/VTokenInterfaces.sol": {
+			"keccak256": "0x3b920718cbc8158be17f257eca7c2f69d69f3c7c2e0baa55cd3081895c392a13",
+			"urls": [
+				"bzz-raw://39ac71afca655632277ccfa559e4d15cc5286793fa7fd0e0b264c86e576275c7",
+				"dweb:/ipfs/QmZPJHmxge4Ujn4GYGTRWcxEjY1p2huP63fjyVoGBJsP4X"
+			]
+		}
+	},
+	"version": 1
+}

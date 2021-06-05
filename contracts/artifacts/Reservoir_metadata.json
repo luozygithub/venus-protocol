@@ -1,0 +1,178 @@
+{
+	"compiler": {
+		"version": "0.5.17+commit.d19bba13"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "dripRate_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "contract EIP20Interface",
+						"name": "token_",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "target_",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "drip",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "dripRate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "dripStart",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "dripped",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "target",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "token",
+				"outputs": [
+					{
+						"internalType": "contract EIP20Interface",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "Venus",
+			"details": "This contract must be poked via the `drip()` function every so often.",
+			"methods": {
+				"constructor": {
+					"params": {
+						"dripRate_": "Numer of tokens per block to drip",
+						"target_": "The recipient of dripped tokens",
+						"token_": "The token to drip"
+					}
+				},
+				"drip()": {
+					"details": "Note: this will only drip up to the amount of tokens available.",
+					"return": "The amount of tokens dripped in this call"
+				}
+			},
+			"title": "Reservoir Contract"
+		},
+		"userdoc": {
+			"methods": {
+				"constructor": "Constructs a Reservoir",
+				"drip()": {
+					"notice": "Drips the maximum amount of tokens to match the drip rate since inception"
+				}
+			},
+			"notice": "Distributes a token to a different contract at a fixed rate."
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/Reservoir.sol": "Reservoir"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/EIP20Interface.sol": {
+			"keccak256": "0x33c5c2c7a45637618ec3ff2741c6902c356ef9ced300a0779edb5238791bf70f",
+			"urls": [
+				"bzz-raw://6d7d44e49e90351ac4ffb3e23fb8cded5fe16ee97bd0a7574dce5b5c62289db5",
+				"dweb:/ipfs/QmUDjHJG2jmsoCur474avy3VKEr3iT6yoXAaHyrzgfPA7y"
+			]
+		},
+		"localhost/Reservoir.sol": {
+			"keccak256": "0x1804c497a3f25912ec848b5456be37b1d490acc5d67881b45dab4a50b1ad4340",
+			"urls": [
+				"bzz-raw://09b82d7c510f59c224b62a1d798934c501187788991ed42bfe29e2569dd5696d",
+				"dweb:/ipfs/Qmasx3At9e2nJ1M2RJx3GttgcWM1Se5eysbYRPhkETRDcc"
+			]
+		}
+	},
+	"version": 1
+}

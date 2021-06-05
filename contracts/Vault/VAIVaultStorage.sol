@@ -41,6 +41,7 @@ contract VAIVaultStorage is VAIVaultAdminStorage {
     uint256 public accXVSPerShare;
 
     //// pending rewards awaiting anyone to update
+    // 等待任何人更新的等待奖励
     uint256 public pendingRewards;
 
     /// @notice Info of each user.

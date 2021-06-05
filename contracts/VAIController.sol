@@ -170,6 +170,14 @@ contract VAIController is VAIControllerStorageG2, VAIControllerErrorReporter, Ex
      * @param repayAmount the amount of VAI being returned
      * @return (uint, uint) An error code (0=success, otherwise a failure, see ErrorReporter.sol), and the actual repayment amount.
      */
+     /*
+        * @notice偿还VAI内部
+        * @notice借来的VAIs由其他用户(可能是借方)偿还。
+        * @param payer支付VAI的帐户
+        * @param借款人的帐户与债务正在偿清
+        * @param repayAmount被返回的VAI的数量
+        * @return (uint, uint)错误代码(0=success，否则失败，参见errorreport .sol)，以及实际的还款金额。
+     */
     function repayVAIFresh(address payer, address borrower, uint repayAmount) internal returns (uint, uint) {
         uint actualBurnAmount;
 
@@ -206,6 +214,14 @@ contract VAIController is VAIControllerStorageG2, VAIControllerErrorReporter, Ex
      * @param repayAmount The amount of the underlying borrowed asset to repay
      * @return (uint, uint) An error code (0=success, otherwise a failure, see ErrorReporter.sol), and the actual repayment amount.
      */
+     /*
+        * @notice发送方清算vai minents的抵押品。
+        *扣押的抵押品转移给清盘人。
+        * @param借款人即将被清算的借款人
+        * @param vTokenCollateral从借款人手中没收抵押品的市场
+        * @param repayAmount标的所借资产需偿还的金额
+        * @return (uint, uint)错误代码(0=success，否则失败，参见errorreport .sol)，以及实际的还款金额。
+     */
     function liquidateVAI(address borrower, uint repayAmount, VTokenInterface vTokenCollateral) external nonReentrant returns (uint, uint) {
         require(!ComptrollerImplInterface(address(comptroller)).protocolPaused(), "protocol is paused");
 
@@ -227,6 +243,15 @@ contract VAIController is VAIControllerStorageG2, VAIControllerErrorReporter, Ex
      * @param vTokenCollateral The market in which to seize collateral from the borrower
      * @param repayAmount The amount of the VAI to repay
      * @return (uint, uint) An error code (0=success, otherwise a failure, see ErrorReporter.sol), and the actual repayment VAI.
+     */
+     /*
+        * @notice清盘人以偿还借款人的VAI清偿借款人的抵押品。
+        *扣押的抵押品转移给清盘人。
+        * @param liquidator偿还VAI和扣押抵押品的地址
+        * @param借款人本VAI的借款人将被清算
+        * @param vTokenCollateral从借款人手中没收抵押品的市场
+        * @param repayAmount VAI需要偿还的金额
+        * @return (uint, uint)一个错误代码(0=success，否则为失败，参见errorreport .sol)，和实际的还款VAI。
      */
     function liquidateVAIFresh(address liquidator, address borrower, uint repayAmount, VTokenInterface vTokenCollateral) internal returns (uint, uint) {
         if(address(comptroller) != address(0)) {
@@ -292,7 +317,7 @@ contract VAIController is VAIControllerStorageG2, VAIControllerErrorReporter, Ex
     }
 
     /**
-     * @notice Initialize the VenusVAIState
+     * @notice Initialize the VenusVAIState 初始化VenusVAIState
      */
     function _initializeVenusVAIState(uint blockNumber) external returns (uint) {
         // Check caller is admin
@@ -338,6 +363,10 @@ contract VAIController is VAIControllerStorageG2, VAIControllerErrorReporter, Ex
     /**
      * @notice Calculate XVS accrued by a VAI minter
      * @param vaiMinter The address of the VAI minter to distribute XVS to
+     */
+     /*
+     * @notice计算VAI minter累积的XVS
+    * @param vaiMinter用于分发XVS的VAI minter的地址
      */
     function calcDistributeVAIMinterVenus(address vaiMinter) public returns(uint, uint, uint, uint) {
         // Check caller is comptroller

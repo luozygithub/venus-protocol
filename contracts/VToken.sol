@@ -333,6 +333,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
 
     /**
      * @notice Calculates the exchange rate from the underlying to the VToken
+     * @notice计算从基础到VToken的汇率
      * @dev This function does not accrue interest before calculating the exchange rate
      * @return Calculated exchange rate scaled by 1e18
      */
@@ -393,9 +394,8 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      *   up to the current block and writes new checkpoint to storage.
      */
     /*
-        * @notice将应计利息应用于总借款和准备金
-        * @dev计算从最后一个检查点块累积的利息
-        *直到当前块，并将新的检查点写入存储。
+        * @notice将应计利息应用于总借款和准备金 累计利息记录
+        * @dev计算从最后一个检查点块累积的利息直到当前块，并将新的检查点写入存储。
     */
     function accrueInterest() public returns (uint) {
         /* Remember the initial block number */
@@ -417,16 +417,16 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         uint borrowRateMantissa = interestRateModel.getBorrowRate(cashPrior, borrowsPrior, reservesPrior);
         require(borrowRateMantissa <= borrowRateMaxMantissa, "borrow rate is absurdly high");
 
-        /* Calculate the number of blocks elapsed since the last accrual */
+        /* Calculate the number of blocks elapsed since the last accrual  计算过了多少个区块了*/
         (MathError mathErr, uint blockDelta) = subUInt(currentBlockNumber, accrualBlockNumberPrior);
         require(mathErr == MathError.NO_ERROR, "could not calculate block delta");
 
         /*
          * Calculate the interest accumulated into borrows and reserves and the new index:
          *  simpleInterestFactor = borrowRate * blockDelta
-         *  interestAccumulated = simpleInterestFactor * totalBorrows
+         *  interestAccumulated （利息累积） = simpleInterestFactor * totalBorrows
          *  totalBorrowsNew = interestAccumulated + totalBorrows
-         *  totalReservesNew = interestAccumulated * reserveFactor + totalReserves
+         *  totalReservesNew （新的总储量）= interestAccumulated * reserveFactor + totalReserves
          *  borrowIndexNew = simpleInterestFactor * borrowIndex + borrowIndex
          */
 
@@ -493,9 +493,10 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         uint error = accrueInterest();
         if (error != uint(Error.NO_ERROR)) {
             // accrueInterest emits logs on errors, but we still want to log the fact that an attempted borrow failed
+            //应计利息发出错误日志，但我们仍然希望记录试图借失败的事实
             return (fail(Error(error), FailureInfo.MINT_ACCRUE_INTEREST_FAILED), 0);
         }
-        // mintFresh emits the actual Mint event if successful and logs on errors, so we don't need to
+        // 如果成功，mintFresh会触发实际的Mint事件并记录错误，所以我们不需要这样做
         return mintFresh(msg.sender, mintAmount);
     }
 
@@ -547,12 +548,12 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         // (No safe failures beyond this point)
 
         /*
-         *  We call `doTransferIn` for the minter and the mintAmount.
-         *  Note: The vToken must handle variations between BEP-20 and BNB underlying.
-         *  `doTransferIn` reverts if anything goes wrong, since we can't be sure if
-         *  side-effects occurred. The function returns the amount actually transferred,
-         *  in case of a fee. On success, the vToken holds an additional `actualMintAmount`
-         *  of cash.
+             *我们称minter和mintAmount为“doTransferIn”。
+            *注意:vToken必须处理基础BEP-20和BNB之间的变化。
+            *“doTransferIn”恢复如果有任何错误，因为我们不能确定
+            *副作用发生。函数返回实际转移的金额，
+            *如有费用。成功时，vToken持有一个额外的' actualMintAmount '
+            *的现金。
          */
         vars.actualMintAmount = doTransferIn(minter, mintAmount);
 

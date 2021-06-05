@@ -1,0 +1,332 @@
+{
+	"compiler": {
+		"version": "0.5.17+commit.d19bba13"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "error",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "info",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "detail",
+						"type": "uint256"
+					}
+				],
+				"name": "Failure",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "oldAdmin",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "newAdmin",
+						"type": "address"
+					}
+				],
+				"name": "NewAdmin",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "oldImplementation",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "newImplementation",
+						"type": "address"
+					}
+				],
+				"name": "NewImplementation",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "oldPendingAdmin",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "newPendingAdmin",
+						"type": "address"
+					}
+				],
+				"name": "NewPendingAdmin",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "oldPendingImplementation",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "newPendingImplementation",
+						"type": "address"
+					}
+				],
+				"name": "NewPendingImplementation",
+				"type": "event"
+			},
+			{
+				"payable": true,
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "_acceptAdmin",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "_acceptImplementation",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newPendingAdmin",
+						"type": "address"
+					}
+				],
+				"name": "_setPendingAdmin",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newPendingImplementation",
+						"type": "address"
+					}
+				],
+				"name": "_setPendingImplementation",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "admin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "pendingAdmin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "pendingVAIControllerImplementation",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "vaiControllerImplementation",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {
+				"_acceptAdmin()": {
+					"details": "Admin function for pending admin to accept role and update admin",
+					"return": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)"
+				},
+				"_acceptImplementation()": {
+					"details": "Admin function for new implementation to accept it's role as implementation",
+					"return": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)"
+				},
+				"_setPendingAdmin(address)": {
+					"details": "Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.",
+					"params": {
+						"newPendingAdmin": "New pending admin."
+					},
+					"return": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)"
+				}
+			}
+		},
+		"userdoc": {
+			"methods": {
+				"_acceptAdmin()": {
+					"notice": "Accepts transfer of admin rights. msg.sender must be pendingAdmin"
+				},
+				"_acceptImplementation()": {
+					"notice": "Accepts new implementation of comptroller. msg.sender must be pendingImplementation"
+				},
+				"_setPendingAdmin(address)": {
+					"notice": "Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer."
+				},
+				"_setPendingImplementation(address)": {
+					"notice": "* Admin Functions **"
+				}
+			}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/VAIUnitroller.sol": "VAIUnitroller"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/ComptrollerInterface.sol": {
+			"keccak256": "0x9d9c9227a6f4d807e796b2ec7413c950a69ab80608d95b749796685f044f2177",
+			"urls": [
+				"bzz-raw://11fa6359da8c3b18a79b36bfd9ee27be212d97452565875d191f33f0b21842eb",
+				"dweb:/ipfs/QmNvXsydqZib55x3KPuhWyEwpvfPERNhZd5iDX5BWzyejx"
+			]
+		},
+		"localhost/ErrorReporter.sol": {
+			"keccak256": "0x08bdc77bdcb6954ce9d0367de18184644f30afdc959f54e226788e8813ea3654",
+			"urls": [
+				"bzz-raw://b84c52005a8ec879ef1423aa5b32a1d3fba8f3ecf78a25f99577b2442034e50c",
+				"dweb:/ipfs/QmWWPGHww76gi8DEceCg4W7GwD4djpkGU3rsW9X1CTFXfr"
+			]
+		},
+		"localhost/VAIControllerStorage.sol": {
+			"keccak256": "0x62ace7898f32816b679c9ccdb3f8bf9d3b4c6609a7703a3c0189aa11b043116d",
+			"urls": [
+				"bzz-raw://98623515f27398ef80e9125122ec21bace094fe8cba873b87f17186f21cfc51e",
+				"dweb:/ipfs/QmZptfZxq4cAttQmjGPYNFKeQR1MBpENNuRhvRgKHTtCSw"
+			]
+		},
+		"localhost/VAIUnitroller.sol": {
+			"keccak256": "0x2ff51a0e14efdebf581b2a9d123b4dc3cf197d2ccca2401875c5104a355ca67c",
+			"urls": [
+				"bzz-raw://a4f504c3816051659f3c27732f17d0c47b7961b3cb20255fd8c923f677f85f4c",
+				"dweb:/ipfs/Qmc7xPrAmEXJkpoaAb65RRHGnDvuFK164fd2Vx7eX4B6eT"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,194 @@
+{
+	"compiler": {
+		"version": "0.5.16+commit.9c3226ce"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "approve",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "balanceOf",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "transferFrom",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/VDaiDelegate.sol": "GemLike"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/CarefulMath.sol": {
+			"keccak256": "0x855f65e2bd271e114555e71a10c3b3276ab70643c0c96a452b3493423de474a4",
+			"urls": [
+				"bzz-raw://b9d5e4067644205b15f4a0070c94780c512a33112f1e72637ea65525f3e080e8",
+				"dweb:/ipfs/QmS4TLNXX5DwLnidByLioGgT1bnF5KEDcjTjy73v5FsEQa"
+			]
+		},
+		"localhost/ComptrollerInterface.sol": {
+			"keccak256": "0x1fcdfabea91e6d2fe88e5b73d9d7ad878c5ad7666ca6f50898a462f0ff4a2e34",
+			"urls": [
+				"bzz-raw://5f2bd4c62f2e3774ba7c1670ea3688482413a00383d1a558151376f9ec0146ef",
+				"dweb:/ipfs/QmZT9StA3edEz4AHCqWDEC1bpaqNAjG87aLbqbTuJpWKa1"
+			]
+		},
+		"localhost/EIP20Interface.sol": {
+			"keccak256": "0x33c5c2c7a45637618ec3ff2741c6902c356ef9ced300a0779edb5238791bf70f",
+			"urls": [
+				"bzz-raw://6d7d44e49e90351ac4ffb3e23fb8cded5fe16ee97bd0a7574dce5b5c62289db5",
+				"dweb:/ipfs/QmUDjHJG2jmsoCur474avy3VKEr3iT6yoXAaHyrzgfPA7y"
+			]
+		},
+		"localhost/EIP20NonStandardInterface.sol": {
+			"keccak256": "0x210d80c5343b519cbb0745bc5c7157b79100c5870c80a90596bbeff9186c2b5c",
+			"urls": [
+				"bzz-raw://2424ab90dcf8fc6b636607c4acc3128b6594a23b04d0a93940f8195b5197deca",
+				"dweb:/ipfs/QmaP5BpefdErChAJGyxKbLgLcw15M2r352hLNdVZg4aW3o"
+			]
+		},
+		"localhost/ErrorReporter.sol": {
+			"keccak256": "0x08bdc77bdcb6954ce9d0367de18184644f30afdc959f54e226788e8813ea3654",
+			"urls": [
+				"bzz-raw://b84c52005a8ec879ef1423aa5b32a1d3fba8f3ecf78a25f99577b2442034e50c",
+				"dweb:/ipfs/QmWWPGHww76gi8DEceCg4W7GwD4djpkGU3rsW9X1CTFXfr"
+			]
+		},
+		"localhost/Exponential.sol": {
+			"keccak256": "0x9f441978e19b6e2788386a713bbe330345d98a782da025f583d9dbdb716ab745",
+			"urls": [
+				"bzz-raw://44f8c6abe0bbf1ae08e790b80cb1827d42dd3baa9eea22a4343eb4ca6cf90693",
+				"dweb:/ipfs/Qmc6kAB41xwr3Jywhu17vjMGtCbq5j7bB1uZhZigjnceZB"
+			]
+		},
+		"localhost/ExponentialNoError.sol": {
+			"keccak256": "0x1ed4e4fc1926f2db120798edbd049838c4d47fdbf3416a9aeb4a91ae1872dfc7",
+			"urls": [
+				"bzz-raw://28ad9ce6f1d69a722ab37fd0d1acbf49eddcbf9b7452709f6e41b1d57ed89286",
+				"dweb:/ipfs/Qmah2P2yciY8QYGUp5yG7EoJP4TNM1LZkyuWWAMuPUR6Xy"
+			]
+		},
+		"localhost/InterestRateModel.sol": {
+			"keccak256": "0x5c9db9f1b8de79d4a3780a4475f92028794e36829d82b587339db3afd415d4e3",
+			"urls": [
+				"bzz-raw://b4b605dd8d76d33b8dfce0885ddec7ef91518706108064c901bdcc3f21d2c6f2",
+				"dweb:/ipfs/QmQ53KgdUoprraEc3Ns9a9PRzT3MZMaHzqHfdre48X5wjX"
+			]
+		},
+		"localhost/VBep20.sol": {
+			"keccak256": "0xa42b6934c82d21652149f0af2c342bc18fc4095a190af52c3fcdf57b6a8a3d80",
+			"urls": [
+				"bzz-raw://1a86c7b58fda734a1b0d0156b52967316e27c22870092244ec714c017a4c2a9c",
+				"dweb:/ipfs/QmeWaJMLapxBfdetCoUfojLzQbEkNgmgezsxvcaR4RnbE1"
+			]
+		},
+		"localhost/VBep20Delegate.sol": {
+			"keccak256": "0x0e579aba90aebb8cd3d0f17114a65632cfe4a0b336cf8240dac88eefb4c51573",
+			"urls": [
+				"bzz-raw://5690ddf24e87c5d7ab117925304f6d00554bc0f7bceeeb0b9cd52e3bc9eca637",
+				"dweb:/ipfs/QmRcD3mENUBzZwYP8oaGyKTLA845bYfZKr3Acb5MEhNvt6"
+			]
+		},
+		"localhost/VDaiDelegate.sol": {
+			"keccak256": "0x27ab0773573ebc97e849747f5818074ef5d02027ff3e49f71a13664b53a60b3d",
+			"urls": [
+				"bzz-raw://773809284dbd2ac2962007bebdefbacf97572600a59dff19cb9324680e2f9ff2",
+				"dweb:/ipfs/QmRWBJAmjrESVABtm3PS36u1jY4Q1jdsrLSRaKLw7qWUTb"
+			]
+		},
+		"localhost/VToken.sol": {
+			"keccak256": "0x479ea852cd29203c51e7dcea466c0f024332688ecc2e0733444b98bd35cc22af",
+			"urls": [
+				"bzz-raw://2460e893ba00c1c503f9784d1c661aa67f1488147208aa237886f2054e27f6ba",
+				"dweb:/ipfs/QmPvadkRt69pcYFeoYebtQs6sE6Xb1qZrQz14B1XuvCDmn"
+			]
+		},
+		"localhost/VTokenInterfaces.sol": {
+			"keccak256": "0x3b920718cbc8158be17f257eca7c2f69d69f3c7c2e0baa55cd3081895c392a13",
+			"urls": [
+				"bzz-raw://39ac71afca655632277ccfa559e4d15cc5286793fa7fd0e0b264c86e576275c7",
+				"dweb:/ipfs/QmZPJHmxge4Ujn4GYGTRWcxEjY1p2huP63fjyVoGBJsP4X"
+			]
+		}
+	},
+	"version": 1
+}

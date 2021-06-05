@@ -1,0 +1,345 @@
+{
+	"compiler": {
+		"version": "0.5.17+commit.d19bba13"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "baseRatePerYear",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "multiplierPerYear",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "jumpMultiplierPerYear",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "kink_",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "baseRatePerBlock",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "multiplierPerBlock",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "jumpMultiplierPerBlock",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "kink",
+						"type": "uint256"
+					}
+				],
+				"name": "NewInterestParams",
+				"type": "event"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "baseRatePerBlock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "blocksPerYear",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "cash",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "borrows",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reserves",
+						"type": "uint256"
+					}
+				],
+				"name": "getBorrowRate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "cash",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "borrows",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reserves",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reserveFactorMantissa",
+						"type": "uint256"
+					}
+				],
+				"name": "getSupplyRate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "isInterestRateModel",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "jumpMultiplierPerBlock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "kink",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "multiplierPerBlock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "cash",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "borrows",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reserves",
+						"type": "uint256"
+					}
+				],
+				"name": "utilizationRate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "Venus",
+			"methods": {
+				"constructor": {
+					"params": {
+						"baseRatePerYear": "The approximate target base APR, as a mantissa (scaled by 1e18)",
+						"jumpMultiplierPerYear": "The multiplierPerBlock after hitting a specified utilization point",
+						"kink_": "The utilization point at which the jump multiplier is applied",
+						"multiplierPerYear": "The rate of increase in interest rate wrt utilization (scaled by 1e18)"
+					}
+				},
+				"getBorrowRate(uint256,uint256,uint256)": {
+					"params": {
+						"borrows": "The amount of borrows in the market",
+						"cash": "The amount of cash in the market",
+						"reserves": "The amount of reserves in the market"
+					},
+					"return": "The borrow rate percentage per block as a mantissa (scaled by 1e18)"
+				},
+				"getSupplyRate(uint256,uint256,uint256,uint256)": {
+					"params": {
+						"borrows": "The amount of borrows in the market",
+						"cash": "The amount of cash in the market",
+						"reserveFactorMantissa": "The current reserve factor for the market",
+						"reserves": "The amount of reserves in the market"
+					},
+					"return": "The supply rate percentage per block as a mantissa (scaled by 1e18)"
+				},
+				"utilizationRate(uint256,uint256,uint256)": {
+					"params": {
+						"borrows": "The amount of borrows in the market",
+						"cash": "The amount of cash in the market",
+						"reserves": "The amount of reserves in the market (currently unused)"
+					},
+					"return": "The utilization rate as a mantissa between [0, 1e18]"
+				}
+			},
+			"title": "Venus's JumpRateModel Contract"
+		},
+		"userdoc": {
+			"methods": {
+				"constructor": "Construct an interest rate model",
+				"getBorrowRate(uint256,uint256,uint256)": {
+					"notice": "Calculates the current borrow rate per block, with the error code expected by the market"
+				},
+				"getSupplyRate(uint256,uint256,uint256,uint256)": {
+					"notice": "Calculates the current supply rate per block"
+				},
+				"utilizationRate(uint256,uint256,uint256)": {
+					"notice": "Calculates the utilization rate of the market: `borrows / (cash + borrows - reserves)`"
+				}
+			}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"localhost/JumpRateModel.sol": "JumpRateModel"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"localhost/InterestRateModel.sol": {
+			"keccak256": "0x5c9db9f1b8de79d4a3780a4475f92028794e36829d82b587339db3afd415d4e3",
+			"urls": [
+				"bzz-raw://b4b605dd8d76d33b8dfce0885ddec7ef91518706108064c901bdcc3f21d2c6f2",
+				"dweb:/ipfs/QmQ53KgdUoprraEc3Ns9a9PRzT3MZMaHzqHfdre48X5wjX"
+			]
+		},
+		"localhost/JumpRateModel.sol": {
+			"keccak256": "0x32024772a0ccbc5caf4647eeda64f35fe604656e01704d606403dd0d519c5a5a",
+			"urls": [
+				"bzz-raw://c475200365ac8dc0e14c79d1eb4a32e814a7db5e0c9d18d47fd67696ad75e2b0",
+				"dweb:/ipfs/Qma5BfMVMSs3tp5Fkh2T1z7Mh9QvVVxuYzPjUqfPDJGyoF"
+			]
+		},
+		"localhost/SafeMath.sol": {
+			"keccak256": "0x00d0b81f33cbb3248a19a9813f8cd9c82a942d274e772d0e5f3d3dab94a38018",
+			"urls": [
+				"bzz-raw://6f9bb3bdd490aaff38ec8296558180b132fb6d3fe9a1d801ae24a2eb911c9bb7",
+				"dweb:/ipfs/QmRG2AjEWh2ap9J5wTD15TQR7rFvvMexjSP9A14c6DedZW"
+			]
+		}
+	},
+	"version": 1
+}

@@ -101,7 +101,8 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
     // closeFactorMantissa must not exceed this value
     uint internal constant closeFactorMaxMantissa = 0.9e18; // 0.9
 
-    // No collateralFactorMantissa may exceed this value
+    // No collateralFactorMantissa may exceed this value 任何collateralFactorMantissa不得超过此值
+    // 最高抵押率
     uint internal constant collateralFactorMaxMantissa = 0.9e18; // 0.9
 
     constructor() public {
@@ -136,6 +137,11 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @param account The address of the account to pull assets for
      * @return A dynamic list with the assets the account has entered
      */
+    /*
+        * @notice返回帐户输入的资产
+        * @param account要提取资产的帐户地址
+        * @return一个动态列表，包含帐户输入的资产
+    */
     function getAssetsIn(address account) external view returns (VToken[] memory) {
         return accountAssets[account];
     }
@@ -146,15 +152,24 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @param vToken The vToken to check
      * @return True if the account is in the asset, otherwise false.
      */
+    /*
+        * @notice返回给定的帐户是否输入到给定的资产中
+        * @param account要检查的帐户地址
+        * @param vToken检查的vToken
+        * @return True如果帐户在资产中，否则为false。
+    */
     function checkMembership(address account, VToken vToken) external view returns (bool) {
         return markets[address(vToken)].accountMembership[account];
     }
 
     /**
      * @notice Add assets to be included in account liquidity calculation
-     增加需要计入账户流动性的资产
+
      * @param vTokens The list of addresses of the vToken markets to be enabled
      * @return Success indicator for whether each corresponding market was entered
+        * @notice增加资产计入账户流动性计算
+        * @param vTokens要启用的vToken市场地址列表
+        * @return每个对应市场是否进入的成功指标
      */
     function enterMarkets(address[] calldata vTokens) external returns (uint[] memory) {
         uint len = vTokens.length;
@@ -173,6 +188,12 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @param borrower The address of the account to modify
      * @return Success indicator for whether the market was entered
      */
+    /*
+        * @notice将市场加入借款人的“资产”中，用于计算流动性
+        * @param vToken进入的市场
+        * @param借款人要修改的帐户地址
+        * @return成功指示是否进入市场
+    */
     function addToMarketInternal(VToken vToken, address borrower) internal returns (Error) {
         Market storage marketToJoin = markets[address(vToken)];
 
@@ -186,11 +207,11 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
             return Error.NO_ERROR;
         }
 
-        // survived the gauntlet, add to list
-        // NOTE: we store these somewhat redundantly as a significant optimization
-        //  this avoids having to iterate through the list for the most common use cases
-        //  that is, only when we need to perform liquidity checks
-        //  and not whenever we want to check if an account is in a particular market
+        //幸存的挑战，添加到列表
+        //注意:我们存储这些有点冗余作为一个重要的优化
+        //这样可以避免在最常见的用例中迭代列表
+        //当我们需要进行流动性检查时
+        //而不是当我们想要查看一个帐户是否在一个特定的市场
         marketToJoin.accountMembership[borrower] = true;
         accountAssets[borrower].push(vToken);
 
@@ -206,6 +227,11 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      *  or be providing necessary collateral for an outstanding borrow.
      * @param vTokenAddress The address of the asset to be removed
      * @return Whether or not the account successfully exited the market
+        * @notice从发送者的账户流动性计算中删除资产
+        * @dev发送方资产中不得有未偿还的借款余额，
+        *或为未偿还借款提供必要的抵押品。
+        * @param vTokenAddress要删除的资产地址
+        * @return帐户是否成功退出市场
      */
     function exitMarket(address vTokenAddress) external returns (uint) {
         VToken vToken = VToken(vTokenAddress);
@@ -263,6 +289,11 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @param minter The account which would get the minted tokens
      * @param mintAmount The amount of underlying being supplied to the market in exchange for tokens
      * @return 0 if the mint is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
+        * @notice检查该账户是否应该被允许在给定的市场中铸造代币
+        * @param vToken要验证造币厂的市场
+        * @param minter将获得铸币的帐户
+        * @param mintAmount为交换代币而提供给市场的基础数量
+        * @return 0如果mint是允许的，否则一个半不透明的错误代码(参见ErrorReporter.sol)
      */
     function mintAllowed(address vToken, address minter, uint mintAmount) external onlyProtocolAllowed returns (uint) {
         // Pausing is a very serious situation - we revert to sound the alarms
@@ -289,6 +320,13 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @param actualMintAmount The amount of the underlying asset being minted
      * @param mintTokens The number of tokens being minted
      */
+    /*
+        * @notice在拒绝时验证薄荷和回复。可能发出日志。
+        * @param vToken资产正在被铸造
+        * @param minter制造令牌的地址
+        * @param actualMintAmount被铸造的基础资产的数量
+        * @param mintTokens被铸造的token数量
+    */
     function mintVerify(address vToken, address minter, uint actualMintAmount, uint mintTokens) external {
         // Shh - currently unused
         vToken;
@@ -304,6 +342,13 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @param redeemTokens The number of vTokens to exchange for the underlying asset in the market
      * @return 0 if the redeem is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
      */
+    /*
+        * @notice检查账户是否应该被允许在给定的市场中兑换代币
+        * @param vToken市场验证赎回
+        * @param redeemer赎回令牌的帐户
+        * @param redeemTokens用于在市场上交换基础资产的vtoken数量
+        * @return 0如果赎回是允许的，否则一个半不透明的错误代码(参见ErrorReporter.sol)
+    */
     function redeemAllowed(address vToken, address redeemer, uint redeemTokens) external onlyProtocolAllowed returns (uint) {
         uint allowed = redeemAllowedInternal(vToken, redeemer, redeemTokens);
         if (allowed != uint(Error.NO_ERROR)) {
@@ -345,6 +390,11 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @param redeemer The address redeeming the tokens
      * @param redeemAmount The amount of the underlying asset being redeemed
      * @param redeemTokens The number of tokens being redeemed
+        * @notice 在拒绝时验证赎回和恢复。可能发出日志。
+        * @param vToken资产正在赎回
+        * @param redeemer赎回令牌的地址
+        * @param redeemAmount赎回标的资产的金额
+        * @param redeemTokens被赎回的令牌token
      */
     function redeemVerify(address vToken, address redeemer, uint redeemAmount, uint redeemTokens) external {
         // Shh - currently unused
@@ -362,8 +412,15 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @param borrowAmount The amount of underlying the account would borrow
      * @return 0 if the borrow is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
      */
+    /*
+        * @notice检查该帐户是否应获准借入指定市场的标的资产
+        * @param vToken要验证借出的市场
+        * @param借款人将借资产的帐户
+        * @param borrowAmount账户将借的金额
+        * @return 0如果允许借，否则是半不透明的错误代码(参见ErrorReporter.sol)
+    */
     function borrowAllowed(address vToken, address borrower, uint borrowAmount) external onlyProtocolAllowed returns (uint) {
-        // Pausing is a very serious situation - we revert to sound the alarms
+        //暂停是一种非常严重的情况-我们恢复发出警报
         require(!borrowGuardianPaused[vToken], "borrow is paused");
 
         if (!markets[vToken].isListed) {
@@ -414,6 +471,10 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @param vToken Asset whose underlying is being borrowed
      * @param borrower The address borrowing the underlying
      * @param borrowAmount The amount of the underlying asset requested to borrow
+        * @notice验证被拒绝时的借用和还原。可能发出日志。
+        * @param vToken资产，其基础被借用
+        * @param借款人借用底层的地址
+        * @param borrowAmount要求借的标的资产的金额
      */
     function borrowVerify(address vToken, address borrower, uint borrowAmount) external {
         // Shh - currently unused
@@ -429,6 +490,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Checks if the account should be allowed to repay a borrow in the given market
+     * @notice检查帐户是否可以在指定的市场上偿还贷款
      * @param vToken The market to verify the repay against
      * @param payer The account which would repay the asset
      * @param borrower The account which would repay the asset
@@ -459,6 +521,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Validates repayBorrow and reverts on rejection. May emit logs.
+     * @notice在拒绝时确认还款和归还。 可能发出日志。
      * @param vToken Asset being repaid
      * @param payer The address repaying the borrow
      * @param borrower The address of the borrower
@@ -485,6 +548,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Checks if the liquidation should be allowed to occur
+     * @notice检查是否允许清算发生
      * @param vTokenBorrowed Asset which was borrowed by the borrower
      * @param vTokenCollateral Asset which was used as collateral and will be seized
      * @param liquidator The address repaying the borrow and seizing the collateral
@@ -531,6 +595,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Validates liquidateBorrow and reverts on rejection. May emit logs.
+     * @notice确认已清偿借款并在拒绝时返还。可能发出日志。
      * @param vTokenBorrowed Asset which was borrowed by the borrower
      * @param vTokenCollateral Asset which was used as collateral and will be seized
      * @param liquidator The address repaying the borrow and seizing the collateral
@@ -560,6 +625,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Checks if the seizing of assets should be allowed to occur
+     * @notice检查是否允许发生资产扣押
      * @param vTokenCollateral Asset which was used as collateral and will be seized
      * @param vTokenBorrowed Asset which was borrowed by the borrower
      * @param liquidator The address repaying the borrow and seizing the collateral
@@ -597,6 +663,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Validates seize and reverts on rejection. May emit logs.
+     * @notice确认扣押和拒收。 可能发出日志。
      * @param vTokenCollateral Asset which was used as collateral and will be seized
      * @param vTokenBorrowed Asset which was borrowed by the borrower
      * @param liquidator The address repaying the borrow and seizing the collateral
@@ -624,6 +691,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Checks if the account should be allowed to transfer tokens in the given market
+     * @notice检查账户是否应该被允许在给定的市场中转移代币
      * @param vToken The market to verify the transfer against
      * @param src The account which sources the tokens
      * @param dst The account which receives the tokens
@@ -651,6 +719,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Validates transfer and reverts on rejection. May emit logs.
+     * @notice确认转让和退回拒绝。可能发出日志。
      * @param vToken Asset being transferred
      * @param src The account which sources the tokens
      * @param dst The account which receives the tokens
@@ -691,6 +760,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Determine the current account liquidity wrt collateral requirements
+     * @notice确定活期账户流动性要求
      * @return (possible error code (semi-opaque),
                 account liquidity in excess of collateral requirements,
      *          account shortfall below collateral requirements)
@@ -703,6 +773,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Determine what the account liquidity would be if the given amounts were redeemed/borrowed
+     * @notice如果赎回/借入了给定的金额，确定账户的流动性是多少
      * @param vTokenModify The market to hypothetically redeem/borrow in
      * @param account The account to determine liquidity for
      * @param redeemTokens The number of tokens to hypothetically redeem
@@ -722,6 +793,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Determine what the account liquidity would be if the given amounts were redeemed/borrowed
+     * @notice如果赎回/借入了给定的金额，确定账户的流动性是多少
      * @param vTokenModify The market to hypothetically redeem/borrow in
      * @param account The account to determine liquidity for
      * @param redeemTokens The number of tokens to hypothetically redeem
@@ -794,6 +866,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Calculate number of tokens of collateral asset to seize given an underlying amount
+     * @notice计算给定基础金额的抵押品资产的token数量
      * @dev Used in liquidation (called in vToken.liquidateBorrowFresh)
      * @param vTokenBorrowed The address of the borrowed vToken
      * @param vTokenCollateral The address of the collateral vToken
@@ -831,6 +904,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Calculate number of tokens of collateral asset to seize given an underlying amount
+     * @notice计算给定基础金额的抵押品资产的token数量
      * @dev Used in liquidation (called in vToken.liquidateBorrowFresh)
      * @param vTokenCollateral The address of the collateral vToken
      * @param actualRepayAmount The amount of vTokenBorrowed underlying to convert into vTokenCollateral tokens

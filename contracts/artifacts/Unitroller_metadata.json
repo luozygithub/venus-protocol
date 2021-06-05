@@ -295,7 +295,7 @@
 		"evmVersion": "istanbul",
 		"libraries": {},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -309,10 +309,10 @@
 			]
 		},
 		"localhost/ComptrollerInterface.sol": {
-			"keccak256": "0x9d9c9227a6f4d807e796b2ec7413c950a69ab80608d95b749796685f044f2177",
+			"keccak256": "0x1fcdfabea91e6d2fe88e5b73d9d7ad878c5ad7666ca6f50898a462f0ff4a2e34",
 			"urls": [
-				"bzz-raw://11fa6359da8c3b18a79b36bfd9ee27be212d97452565875d191f33f0b21842eb",
-				"dweb:/ipfs/QmNvXsydqZib55x3KPuhWyEwpvfPERNhZd5iDX5BWzyejx"
+				"bzz-raw://5f2bd4c62f2e3774ba7c1670ea3688482413a00383d1a558151376f9ec0146ef",
+				"dweb:/ipfs/QmZT9StA3edEz4AHCqWDEC1bpaqNAjG87aLbqbTuJpWKa1"
 			]
 		},
 		"localhost/ComptrollerStorage.sol": {
@@ -386,10 +386,10 @@
 			]
 		},
 		"localhost/VToken.sol": {
-			"keccak256": "0x479ea852cd29203c51e7dcea466c0f024332688ecc2e0733444b98bd35cc22af",
+			"keccak256": "0xf4667d961ee386cb1d8c269252c5b37c7954ce67a752b79bf6b5259584866b79",
 			"urls": [
-				"bzz-raw://2460e893ba00c1c503f9784d1c661aa67f1488147208aa237886f2054e27f6ba",
-				"dweb:/ipfs/QmPvadkRt69pcYFeoYebtQs6sE6Xb1qZrQz14B1XuvCDmn"
+				"bzz-raw://51aa02b8a8a09984f22dec60351bc8d07723a1d35aa3b65e0e1f7f13363e6999",
+				"dweb:/ipfs/QmQwFNBdGcPnYaU3mArVjpNu2EaQnThPJCHsvqu44wQX4D"
 			]
 		},
 		"localhost/VTokenInterfaces.sol": {

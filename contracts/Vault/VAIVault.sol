@@ -44,6 +44,10 @@ contract VAIVault is VAIVaultStorage {
      * @notice Deposit VAI to VAIVault for XVS allocation
      * @param _amount The amount to deposit to vault
      */
+     /*
+        * @notice 将VAI存入VAIVault用于XVS分配
+        * @param _amount存入到保险库的金额
+     */
     function deposit(uint256 _amount) public nonReentrant {
         UserInfo storage user = userInfo[msg.sender];
 
@@ -102,10 +106,13 @@ contract VAIVault is VAIVaultStorage {
      * @notice View function to see pending XVS on frontend
      * @param _user The user to see pending XVS
      */
+    /*
+        * @notice查看功能，查看前端挂起的XVS
+        * @param _user要查看挂起的XVS的用户
+    */
     function pendingXVS(address _user) public view returns (uint256)
     {
         UserInfo storage user = userInfo[_user];
-
         return user.amount.mul(accXVSPerShare).div(1e18).sub(user.rewardDebt);
     }
 
@@ -125,6 +132,9 @@ contract VAIVault is VAIVaultStorage {
      * @notice Safe XVS transfer function, just in case if rounding error causes pool to not have enough XVS
      * @param _to The address that XVS to be transfered
      * @param _amount The amount that XVS to be transfered
+     * @notice安全的XVS传递函数，以防舍入错误导致池没有足够的XVS
+    * @param _to XVS要传输的地址
+    * @param _amount XVS转账的金额
      */
     function safeXVSTransfer(address _to, uint256 _amount) internal {
         uint256 xvsBal = xvs.balanceOf(address(this));

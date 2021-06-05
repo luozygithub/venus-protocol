@@ -2823,7 +2823,7 @@
 		"evmVersion": "istanbul",
 		"libraries": {},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -2942,10 +2942,10 @@
 			]
 		},
 		"localhost/VToken.sol": {
-			"keccak256": "0xa3ec78945788172221500bf22a637c538cd01585b0abcc7cb8955d76d73dd017",
+			"keccak256": "0xf4667d961ee386cb1d8c269252c5b37c7954ce67a752b79bf6b5259584866b79",
 			"urls": [
-				"bzz-raw://0ab2ef9504752aaf7fe3c5636fe263bfc30990ec42e3c2b94afb0bb9b9d01d85",
-				"dweb:/ipfs/QmYMgcywMFvEjTG7mehKL6gVhCzsKeZjfkh47zvmHTXF3k"
+				"bzz-raw://51aa02b8a8a09984f22dec60351bc8d07723a1d35aa3b65e0e1f7f13363e6999",
+				"dweb:/ipfs/QmQwFNBdGcPnYaU3mArVjpNu2EaQnThPJCHsvqu44wQX4D"
 			]
 		},
 		"localhost/VTokenInterfaces.sol": {
