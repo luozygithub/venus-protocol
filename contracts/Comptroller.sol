@@ -548,13 +548,20 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
     /**
      * @notice Checks if the liquidation should be allowed to occur
-     * @notice检查是否允许清算发生
      * @param vTokenBorrowed Asset which was borrowed by the borrower
      * @param vTokenCollateral Asset which was used as collateral and will be seized
      * @param liquidator The address repaying the borrow and seizing the collateral
      * @param borrower The address of the borrower
      * @param repayAmount The amount of underlying being repaid
      */
+    /*
+        * @param vTokenBorrowed被借款人借用的资产
+        * @notice检查是否允许清算发生
+        * @param vTokenCollateral被用作抵押品并将被扣押的资产
+        * @param liquidator偿还借款并扣押抵押品的地址
+        * @param借款人地址
+        * @param repayAmount偿还的基础金额
+    */
     function liquidateBorrowAllowed(
         address vTokenBorrowed,
         address vTokenCollateral,

@@ -413,7 +413,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         uint reservesPrior = totalReserves;
         uint borrowIndexPrior = borrowIndex;
 
-        /* Calculate the current borrow interest rate */
+        /* Calculate the current borrow interest rate 计算当前借款比率 */
         uint borrowRateMantissa = interestRateModel.getBorrowRate(cashPrior, borrowsPrior, reservesPrior);
         require(borrowRateMantissa <= borrowRateMaxMantissa, "borrow rate is absurdly high");
 
@@ -917,6 +917,9 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @param repayAmount the amount of undelrying tokens being returned
      * @return (uint, uint) An error code (0=success, otherwise a failure, see ErrorReporter.sol), and the actual repayment amount.
      */
+    /*
+        归还借款
+    */
     function repayBorrowFresh(address payer, address borrower, uint repayAmount) internal returns (uint, uint) {
         /* Fail if repayBorrow not allowed */
         uint allowed = comptroller.repayBorrowAllowed(address(this), payer, borrower, repayAmount);
@@ -1019,24 +1022,33 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @param repayAmount The amount of the underlying borrowed asset to repay
      * @return (uint, uint) An error code (0=success, otherwise a failure, see ErrorReporter.sol), and the actual repayment amount.
      */
+    /*
+      * @notice清盘人清算借款人的抵押品。
+        *扣押的抵押品转移给清盘人。
+        * @param借款人这个vToken被清算的借款人
+        * @param liquidator偿还借款并扣押抵押品的地址
+        * @param vTokenCollateral从借款人手中没收抵押品的市场
+        * @param repayAmount标的所借资产需偿还的金额
+        * @return (uint, uint)错误代码(0=success，否则失败，参见errorreport .sol)，以及实际的还款金额。
+    */
     function liquidateBorrowFresh(address liquidator, address borrower, uint repayAmount, VTokenInterface vTokenCollateral) internal returns (uint, uint) {
-        /* Fail if liquidate not allowed */
+        /* Fail if liquidate not allowed 先验证 */
         uint allowed = comptroller.liquidateBorrowAllowed(address(this), address(vTokenCollateral), liquidator, borrower, repayAmount);
         if (allowed != 0) {
             return (failOpaque(Error.COMPTROLLER_REJECTION, FailureInfo.LIQUIDATE_COMPTROLLER_REJECTION, allowed), 0);
         }
 
-        /* Verify market's block number equals current block number */
+        /* Verify market's block number equals current block number  区块验证*/
         if (accrualBlockNumber != getBlockNumber()) {
             return (fail(Error.MARKET_NOT_FRESH, FailureInfo.LIQUIDATE_FRESHNESS_CHECK), 0);
         }
 
-        /* Verify vTokenCollateral market's block number equals current block number */
+        /* Verify vTokenCollateral market's block number equals current block number vTokenCollateral下区块验证  */
         if (vTokenCollateral.accrualBlockNumber() != getBlockNumber()) {
             return (fail(Error.MARKET_NOT_FRESH, FailureInfo.LIQUIDATE_COLLATERAL_FRESHNESS_CHECK), 0);
         }
 
-        /* Fail if borrower = liquidator */
+        /* Fail if borrower = liquidator 验证借款人和借用人不是一个人 */
         if (borrower == liquidator) {
             return (fail(Error.INVALID_ACCOUNT_PAIR, FailureInfo.LIQUIDATE_LIQUIDATOR_IS_BORROWER), 0);
         }
@@ -1052,7 +1064,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         }
 
 
-        /* Fail if repayBorrow fails */
+        /* Fail if repayBorrow fails 归还借款 ！！！ */
         (uint repayBorrowError, uint actualRepayAmount) = repayBorrowFresh(liquidator, borrower, repayAmount);
         if (repayBorrowError != uint(Error.NO_ERROR)) {
             return (fail(Error(repayBorrowError), FailureInfo.LIQUIDATE_REPAY_BORROW_FRESH_FAILED), 0);
@@ -1066,7 +1078,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         (uint amountSeizeError, uint seizeTokens) = comptroller.liquidateCalculateSeizeTokens(address(this), address(vTokenCollateral), actualRepayAmount);
         require(amountSeizeError == uint(Error.NO_ERROR), "LIQUIDATE_COMPTROLLER_CALCULATE_AMOUNT_SEIZE_FAILED");
 
-        /* Revert if borrower collateral token balance < seizeTokens */
+        /* Revert if borrower collateral token balance < seizeTokens 如果借款人抵押令牌余额< seizetoken，则恢复 */
         require(vTokenCollateral.balanceOf(borrower) >= seizeTokens, "LIQUIDATE_SEIZE_TOO_MUCH");
 
         // If this is also the collateral, run seizeInternal to avoid re-entrancy, otherwise make an external call
@@ -1098,6 +1110,15 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @param seizeTokens The number of vTokens to seize
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
+    /*
+        * @notice将抵押代币(这个市场)转让给清算人。
+        * @dev将失败，除非在清算过程中被另一个vToken调用。
+        使用味精绝对是至关重要的。sender作为借用的vToken，而不是参数。
+        * @param liquidator接收扣押抵押品的帐户
+        * @param借款人抵押品被没收的帐户
+        * @param seizeTokens占用的vtoken数量
+        * @return uint 0=success，否则失败(参见ErrorReporter。索尔详情)
+    */
     function seize(address liquidator, address borrower, uint seizeTokens) external nonReentrant returns (uint) {
         return seizeInternal(msg.sender, liquidator, borrower, seizeTokens);
     }

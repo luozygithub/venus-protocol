@@ -424,6 +424,12 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @param borrower The account which would repay the asset
      * @param repayAmount The amount of the underlying asset the account would repay
      * @return 0 if the repay is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
+        * @notice检查帐户是否可以在指定的市场上偿还贷款
+        * @param vToken用于验证偿还的市场
+        * @param payer用于偿还资产的帐户
+        * @param借款人用于偿还资产的帐户
+        * @param repayAmount该帐户将偿还的标的资产金额
+        * @return 0如果允许偿还，否则一个半不透明的错误代码(参见ErrorReporter.sol)
      */
     function repayBorrowAllowed(
         address vToken,
@@ -448,11 +454,16 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
     }
 
     /**
-     * @notice Validates repayBorrow and reverts on rejection. May emit logs.
+     * @notice Validates repayBorrow and reverts on rejection. May emit logs. 偿还借款验证
      * @param vToken Asset being repaid
      * @param payer The address repaying the borrow
      * @param borrower The address of the borrower
      * @param actualRepayAmount The amount of underlying being repaid
+        * @notice在拒绝时确认还款和归还。可能发出日志。
+        * @param vToken资产正在偿还
+        * @param payer还款地址
+        * @param借款人地址
+        * @param actualRepayAmount基础被偿还的金额
      */
     function repayBorrowVerify(
         address vToken,
@@ -480,6 +491,12 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @param liquidator The address repaying the borrow and seizing the collateral
      * @param borrower The address of the borrower
      * @param repayAmount The amount of underlying being repaid
+        * @notice检查是否允许清算发生
+        * @param vTokenBorrowed被借款人借用的资产
+        * @param vTokenCollateral被用作抵押品并将被扣押的资产
+        * @param liquidator偿还借款并扣押抵押品的地址
+        * @param借款人地址
+        * @param repayAmount偿还的基础金额
      */
     function liquidateBorrowAllowed(
         address vTokenBorrowed,
@@ -504,6 +521,7 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
         }
 
         /* The liquidator may not repay more than what is allowed by the closeFactor */
+        /*清算人偿还的金额不得超过closeFactor允许的金额*/
         uint borrowBalance = VToken(vTokenBorrowed).borrowBalanceStored(borrower);
         (MathError mathErr, uint maxClose) = mulScalarTruncate(Exp({mantissa: closeFactorMantissa}), borrowBalance);
         if (mathErr != MathError.NO_ERROR) {
@@ -523,6 +541,12 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @param liquidator The address repaying the borrow and seizing the collateral
      * @param borrower The address of the borrower
      * @param actualRepayAmount The amount of underlying being repaid
+        * @notice确认已清偿借款并在拒绝时返还。可能发出日志。
+        * @param vTokenBorrowed被借款人借用的资产
+        * @param vTokenCollateral被用作抵押品并将被扣押的资产
+        * @param liquidator偿还借款并扣押抵押品的地址
+        * @param借款人地址
+        * @param actualRepayAmount基础被偿还的金额
      */
     function liquidateBorrowVerify(
         address vTokenBorrowed,
@@ -552,6 +576,12 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @param liquidator The address repaying the borrow and seizing the collateral
      * @param borrower The address of the borrower
      * @param seizeTokens The number of collateral tokens to seize
+        * @notice检查是否允许发生资产扣押
+        * @param vTokenCollateral被用作抵押品并将被扣押的资产
+        * @param vTokenBorrowed被借款人借用的资产
+        * @param liquidator偿还借款并扣押抵押品的地址
+        * @param借款人地址
+        * @param seizeTokens附带令牌的数量
      */
     function seizeAllowed(
         address vTokenCollateral,
@@ -588,6 +618,12 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @param liquidator The address repaying the borrow and seizing the collateral
      * @param borrower The address of the borrower
      * @param seizeTokens The number of collateral tokens to seize
+     * @notice确认扣押和拒收。可能发出日志。
+        * @param vTokenCollateral被用作抵押品并将被扣押的资产
+        * @param vTokenBorrowed被借款人借用的资产
+        * @param liquidator偿还借款并扣押抵押品的地址
+        * @param借款人地址
+        * @param seizeTokens附带令牌的数量
      */
     function seizeVerify(
         address vTokenCollateral,
@@ -615,6 +651,12 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @param dst The account which receives the tokens
      * @param transferTokens The number of vTokens to transfer
      * @return 0 if the transfer is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol)
+     * @notice检查账户是否应该被允许在给定的市场中转移代币
+        * @param vToken用于验证传输的市场
+        * @param src来自令牌的帐户
+        * @param dst接收令牌的帐户
+        * @param transferTokens转移的vtoken数量
+        * @return 0如果传输是允许的，否则一个半不透明的错误代码(参见ErrorReporter.sol)
      */
     function transferAllowed(address vToken, address src, address dst, uint transferTokens) external onlyProtocolAllowed returns (uint) {
         // Pausing is a very serious situation - we revert to sound the alarms
@@ -641,6 +683,11 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @param src The account which sources the tokens
      * @param dst The account which receives the tokens
      * @param transferTokens The number of vTokens to transfer
+     * @notice确认转让和退回拒绝。可能发出日志。
+        * @param vToken资产正在转移
+        * @param src来自令牌的帐户
+        * @param dst接收令牌的帐户
+        * @param transferTokens转移的vtoken数量
      */
     function transferVerify(address vToken, address src, address dst, uint transferTokens) external {
         // Shh - currently unused
@@ -661,6 +708,9 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @dev Local vars for avoiding stack-depth limits in calculating account liquidity.
      *  Note that `vTokenBalance` is the number of vTokens the account owns in the market,
      *  whereas `borrowBalance` is the amount of underlying that the account has borrowed.
+     * @dev Local vars避免堆栈深度限制计算帐户流动性。
+        *注意' vTokenBalance '是账户在市场上拥有的vtoken数量，
+        而' borrowBalance '是指帐户所借的基础金额。
      */
     struct AccountLiquidityLocalVars {
         uint sumCollateral;
@@ -680,6 +730,10 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @return (possible error code (semi-opaque),
                 account liquidity in excess of collateral requirements,
      *          account shortfall below collateral requirements)
+     * @notice确定活期账户流动性要求
+       * @return(可能的错误代码(半不透明)，
+        账户流动性超过担保要求，
+        *帐户差额低于担保要求)
      */
     function getAccountLiquidity(address account) public view returns (uint, uint, uint) {
         (Error err, uint liquidity, uint shortfall) = getHypotheticalAccountLiquidityInternal(account, VToken(0), 0, 0);
@@ -696,6 +750,14 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @return (possible error code (semi-opaque),
                 hypothetical account liquidity in excess of collateral requirements,
      *          hypothetical account shortfall below collateral requirements)
+     * @notice如果赎回/借入了给定的金额，确定账户的流动性是多少
+        * @param vTokenModify市场假设赎回/借用
+        * @param account要确定流动性的帐户
+        * @param redeemTokens假设赎回的令牌数量
+        * @param borrowAmount假设借的金额
+        * @return(可能的错误代码(半不透明)，
+        假设账户流动性超过抵押品要求，
+        *假设帐户差额低于担保要求)
      */
     function getHypotheticalAccountLiquidity(
         address account,
@@ -717,6 +779,14 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @return (possible error code,
                 hypothetical account liquidity in excess of collateral requirements,
      *          hypothetical account shortfall below collateral requirements)
+     * @notice如果赎回/借入了给定的金额，确定账户的流动性是多少
+        * @param vTokenModify市场假设赎回/借用
+        * @param account要确定流动性的帐户
+        * @param redeemTokens假设赎回的令牌数量
+        * @param borrowAmount假设借的金额
+        * @dev注意，我们使用存储的数据计算每个附属vToken的exchangerateststored，
+        *不计算累计利息。
+        * @return(可能的错误代码，假设账户流动性超过抵押品要求，假设帐户差额低于担保要求)
      */
     function getHypotheticalAccountLiquidityInternal(
         address account,
@@ -806,6 +876,12 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
      * @param vTokenCollateral The address of the collateral vToken
      * @param actualRepayAmount The amount of vTokenBorrowed underlying to convert into vTokenCollateral tokens
      * @return (errorCode, number of vTokenCollateral tokens to be seized in a liquidation)
+     * @notice计算给定基础金额的抵押品资产的token数量
+        * @dev用于清算(在vToken.liquidateBorrowFresh中调用)
+        * @param vtoken借来的vToken的地址
+        * @param vTokenCollateral vToken的地址
+        * @param actualRepayAmount用于转换为vTokenCollateral令牌的vtoken借来的数量
+        * @return (errorCode，清算中被扣押的vTokenCollateral token的数量)
      */
     function liquidateCalculateSeizeTokens(address vTokenBorrowed, address vTokenCollateral, uint actualRepayAmount) external view returns (uint, uint) {
         /* Read oracle prices for borrowed and collateral markets */
@@ -857,6 +933,9 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
       * @notice Sets a new price oracle for the comptroller
       * @dev Admin function to set a new price oracle
       * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
+      * @notice为审计员设置一个新的价格oracle
+        * @dev Admin function to set a new price oracle
+        * @return uint 0=success，否则失败(参见ErrorReporter。索尔详情)
       */
     function _setPriceOracle(PriceOracle newOracle) public returns (uint) {
         // Check caller is admin
@@ -881,6 +960,10 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
       * @dev Admin function to set closeFactor
       * @param newCloseFactorMantissa New close factor, scaled by 1e18
       * @return uint 0=success, otherwise a failure. (See ErrorReporter for details)
+      * @notice设置清算借款时使用的closeFactor
+        * @dev Admin函数设置closeFactor
+        * @param newCloseFactorMantissa新的关闭因子，缩放1e18
+        * @return uint 0=success，否则失败。(详情见ErrorReporter)
       */
     function _setCloseFactor(uint newCloseFactorMantissa) external returns (uint) {
         // Check caller is admin
@@ -912,6 +995,11 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
       * @param vToken The market to set the factor on
       * @param newCollateralFactorMantissa The new collateral factor, scaled by 1e18
       * @return uint 0=success, otherwise a failure. (See ErrorReporter for details)
+      * @notice设置市场的collateralFactor
+        * @dev Admin函数设置每个市场的collateralFactor
+        * @param vToken设置因素的市场
+        * @param newCollateralFactorMantissa新的附属因子，缩放1e18
+        * @return uint 0=success，否则失败。(详情见ErrorReporter)
       */
     function _setCollateralFactor(VToken vToken, uint newCollateralFactorMantissa) external returns (uint) {
         // Check caller is admin
@@ -953,6 +1041,10 @@ contract ComptrollerG1 is ComptrollerV1Storage, ComptrollerInterfaceG1, Comptrol
       * @dev Admin function to set maxAssets
       * @param newMaxAssets New max assets
       * @return uint 0=success, otherwise a failure. (See ErrorReporter for details)
+        * @notice设置maxAssets，控制可以输入多少市场
+        * @dev Admin函数设置maxAssets
+        * @param newMaxAssets新的最大资产
+        * @return uint 0=success，否则失败。(详情见ErrorReporter)
       */
     function _setMaxAssets(uint newMaxAssets) external returns (uint) {
         // Check caller is admin
