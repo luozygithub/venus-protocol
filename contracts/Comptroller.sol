@@ -125,7 +125,8 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
     }
 
     modifier validPauseState(bool state) {
-        require(msg.sender == pauseGuardian || msg.sender == admin, "only pause guardian and admin can");//只有暂停管理员和管理员可以
+        require(msg.sender == pauseGuardian || msg.sender == admin, "only pause guardian and admin can");
+        //只有暂停管理员和管理员可以
         require(msg.sender == admin || state == true, "only admin can unpause");
         _;
     }
@@ -234,16 +235,19 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
         * @return帐户是否成功退出市场
      */
     function exitMarket(address vTokenAddress) external returns (uint) {
+        //        获取要退出市场的代币
         VToken vToken = VToken(vTokenAddress);
         /* Get sender tokensHeld and amountOwed underlying from the vToken */
-        (uint oErr, uint tokensHeld, uint amountOwed, ) = vToken.getAccountSnapshot(msg.sender);
-        require(oErr == 0, "getAccountSnapshot failed"); // semi-opaque error code
-
+        //        获取要退出市场代币余额tokensHeld，借款余额amountOwed
+        (uint oErr, uint tokensHeld, uint amountOwed,) = vToken.getAccountSnapshot(msg.sender);
+        require(oErr == 0, "getAccountSnapshot failed");
+        // semi-opaque error code
+        //        借款余额不为零 禁止退出市场
         /* Fail if the sender has a borrow balance */
         if (amountOwed != 0) {
             return fail(Error.NONZERO_BORROW_BALANCE, FailureInfo.EXIT_MARKET_BALANCE_OWED);
         }
-        /*如果发送者不被允许赎回他们所有的令牌，则失败*/
+        /*借款不为零 如果发送者不被允许赎回他们所有的令牌，则失败 */
         /* Fail if the sender is not permitted to redeem all of their tokens */
         uint allowed = redeemAllowedInternal(vTokenAddress, msg.sender, tokensHeld);
         if (allowed != 0) {
@@ -262,6 +266,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
         /* Delete vToken from the account’s list of assets */
         // In order to delete vToken, copy last item in list to location of item to be removed, reduce length by 1
+
         VToken[] storage userAssetList = accountAssets[msg.sender];
         uint len = userAssetList.length;
         uint i;
@@ -459,7 +464,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
         }
 
         // Keep the flywheel moving
-        Exp memory borrowIndex = Exp({mantissa: VToken(vToken).borrowIndex()});
+        Exp memory borrowIndex = Exp({mantissa : VToken(vToken).borrowIndex()});
         updateVenusBorrowIndex(vToken, borrowIndex);
         distributeBorrowerVenus(vToken, borrower, borrowIndex);
 
@@ -512,7 +517,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
         }
 
         // Keep the flywheel moving
-        Exp memory borrowIndex = Exp({mantissa: VToken(vToken).borrowIndex()});
+        Exp memory borrowIndex = Exp({mantissa : VToken(vToken).borrowIndex()});
         updateVenusBorrowIndex(vToken, borrowIndex);
         distributeBorrowerVenus(vToken, borrower, borrowIndex);
 
@@ -555,8 +560,8 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @param repayAmount The amount of underlying being repaid
      */
     /*
-        * @param vTokenBorrowed被借款人借用的资产
         * @notice检查是否允许清算发生
+        * @param vTokenBorrowed被借款人借用的资产
         * @param vTokenCollateral被用作抵押品并将被扣押的资产
         * @param liquidator偿还借款并扣押抵押品的地址
         * @param借款人地址
@@ -584,7 +589,8 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
             return uint(Error.INSUFFICIENT_SHORTFALL);
         }
 
-        /* The liquidator may not repay more than what is allowed by the closeFactor */
+        /* The liquidator may not repay more than what is allowed by the closeFactor
+        清算人偿还的金额不得超过closeFactor所允许的数额 */
         uint borrowBalance;
         if (address(vTokenBorrowed) != address(vaiController)) {
             borrowBalance = VToken(vTokenBorrowed).borrowBalanceStored(borrower);
@@ -592,7 +598,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
             borrowBalance = mintedVAIs[borrower];
         }
 
-        uint maxClose = mul_ScalarTruncate(Exp({mantissa: closeFactorMantissa}), borrowBalance);
+        uint maxClose = mul_ScalarTruncate(Exp({mantissa : closeFactorMantissa}), borrowBalance);
         if (repayAmount > maxClose) {
             return uint(Error.TOO_MUCH_REPAY);
         }
@@ -711,6 +717,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
         // Currently the only consideration is whether or not
         //  the src is allowed to redeem this many tokens
+        //目前唯一要考虑的是是否SRC被允许赎回这么多代币
         uint allowed = redeemAllowedInternal(vToken, src, transferTokens);
         if (allowed != uint(Error.NO_ERROR)) {
             return allowed;
@@ -811,13 +818,15 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
                 hypothetical account liquidity in excess of collateral requirements,
      *          hypothetical account shortfall below collateral requirements)
      */
+    //转账最终验证资产（防止转出已抵押资产）
     function getHypotheticalAccountLiquidityInternal(
         address account,
         VToken vTokenModify,
         uint redeemTokens,
         uint borrowAmount) internal view returns (Error, uint, uint) {
 
-        AccountLiquidityLocalVars memory vars; // Holds all our calculation results
+        AccountLiquidityLocalVars memory vars;
+        // Holds all our calculation results
         uint oErr;
 
         // For each asset the account is in
@@ -827,18 +836,19 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
             // Read the balances and exchange rate from the vToken
             (oErr, vars.vTokenBalance, vars.borrowBalance, vars.exchangeRateMantissa) = asset.getAccountSnapshot(account);
-            if (oErr != 0) { // semi-opaque error code, we assume NO_ERROR == 0 is invariant between upgrades
+            if (oErr != 0) {// semi-opaque error code, we assume NO_ERROR == 0 is invariant between upgrades
                 return (Error.SNAPSHOT_ERROR, 0, 0);
             }
-            vars.collateralFactor = Exp({mantissa: markets[address(asset)].collateralFactorMantissa});
-            vars.exchangeRate = Exp({mantissa: vars.exchangeRateMantissa});
+            vars.collateralFactor = Exp({mantissa : markets[address(asset)].collateralFactorMantissa});
+            vars.exchangeRate = Exp({mantissa : vars.exchangeRateMantissa});
 
             // Get the normalized price of the asset
+            // 获取目前代币价格
             vars.oraclePriceMantissa = oracle.getUnderlyingPrice(asset);
             if (vars.oraclePriceMantissa == 0) {
                 return (Error.PRICE_ERROR, 0, 0);
             }
-            vars.oraclePrice = Exp({mantissa: vars.oraclePriceMantissa});
+            vars.oraclePrice = Exp({mantissa : vars.oraclePriceMantissa});
 
             // Pre-compute a conversion factor from tokens -> bnb (normalized price value)
             vars.tokensToDenom = mul_(mul_(vars.collateralFactor, vars.exchangeRate), vars.oraclePrice);
@@ -894,14 +904,15 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
          *  seizeTokens = seizeAmount / exchangeRate
          *   = actualRepayAmount * (liquidationIncentive * priceBorrowed) / (priceCollateral * exchangeRate)
          */
-        uint exchangeRateMantissa = VToken(vTokenCollateral).exchangeRateStored(); // Note: reverts on error
+        uint exchangeRateMantissa = VToken(vTokenCollateral).exchangeRateStored();
+        // Note: reverts on error
         uint seizeTokens;
         Exp memory numerator;
         Exp memory denominator;
         Exp memory ratio;
 
-        numerator = mul_(Exp({mantissa: liquidationIncentiveMantissa}), Exp({mantissa: priceBorrowedMantissa}));
-        denominator = mul_(Exp({mantissa: priceCollateralMantissa}), Exp({mantissa: exchangeRateMantissa}));
+        numerator = mul_(Exp({mantissa : liquidationIncentiveMantissa}), Exp({mantissa : priceBorrowedMantissa}));
+        denominator = mul_(Exp({mantissa : priceCollateralMantissa}), Exp({mantissa : exchangeRateMantissa}));
         ratio = div_(numerator, denominator);
 
         seizeTokens = mul_ScalarTruncate(ratio, actualRepayAmount);
@@ -919,7 +930,8 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      */
     function liquidateVAICalculateSeizeTokens(address vTokenCollateral, uint actualRepayAmount) external view returns (uint, uint) {
         /* Read oracle prices for borrowed and collateral markets */
-        uint priceBorrowedMantissa = 1e18;  // Note: this is VAI
+        uint priceBorrowedMantissa = 1e18;
+        // Note: this is VAI
         uint priceCollateralMantissa = oracle.getUnderlyingPrice(VToken(vTokenCollateral));
         if (priceCollateralMantissa == 0) {
             return (uint(Error.PRICE_ERROR), 0);
@@ -931,14 +943,15 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
          *  seizeTokens = seizeAmount / exchangeRate
          *   = actualRepayAmount * (liquidationIncentive * priceBorrowed) / (priceCollateral * exchangeRate)
          */
-        uint exchangeRateMantissa = VToken(vTokenCollateral).exchangeRateStored(); // Note: reverts on error
+        uint exchangeRateMantissa = VToken(vTokenCollateral).exchangeRateStored();
+        // Note: reverts on error
         uint seizeTokens;
         Exp memory numerator;
         Exp memory denominator;
         Exp memory ratio;
 
-        numerator = mul_(Exp({mantissa: liquidationIncentiveMantissa}), Exp({mantissa: priceBorrowedMantissa}));
-        denominator = mul_(Exp({mantissa: priceCollateralMantissa}), Exp({mantissa: exchangeRateMantissa}));
+        numerator = mul_(Exp({mantissa : liquidationIncentiveMantissa}), Exp({mantissa : priceBorrowedMantissa}));
+        denominator = mul_(Exp({mantissa : priceCollateralMantissa}), Exp({mantissa : exchangeRateMantissa}));
         ratio = div_(numerator, denominator);
 
         seizeTokens = mul_ScalarTruncate(ratio, actualRepayAmount);
@@ -979,7 +992,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
       */
     function _setCloseFactor(uint newCloseFactorMantissa) external returns (uint) {
         // Check caller is admin
-    	require(msg.sender == admin, "only admin can set close factor");
+        require(msg.sender == admin, "only admin can set close factor");
 
         uint oldCloseFactorMantissa = closeFactorMantissa;
         closeFactorMantissa = newCloseFactorMantissa;
@@ -1007,10 +1020,10 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
             return fail(Error.MARKET_NOT_LISTED, FailureInfo.SET_COLLATERAL_FACTOR_NO_EXISTS);
         }
 
-        Exp memory newCollateralFactorExp = Exp({mantissa: newCollateralFactorMantissa});
+        Exp memory newCollateralFactorExp = Exp({mantissa : newCollateralFactorMantissa});
 
         // Check collateral factor <= 0.9
-        Exp memory highLimit = Exp({mantissa: collateralFactorMaxMantissa});
+        Exp memory highLimit = Exp({mantissa : collateralFactorMaxMantissa});
         if (lessThanExp(highLimit, newCollateralFactorExp)) {
             return fail(Error.INVALID_COLLATERAL_FACTOR, FailureInfo.SET_COLLATERAL_FACTOR_VALIDATION);
         }
@@ -1069,10 +1082,11 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
             return fail(Error.MARKET_ALREADY_LISTED, FailureInfo.SUPPORT_MARKET_EXISTS);
         }
 
-        vToken.isVToken(); // Sanity check to make sure its really a VToken
+        vToken.isVToken();
+        // Sanity check to make sure its really a VToken
 
         // Note that isVenus is not in active use anymore
-        markets[address(vToken)] = Market({isListed: true, isVenus: false, collateralFactorMantissa: 0});
+        markets[address(vToken)] = Market({isListed : true, isVenus : false, collateralFactorMantissa : 0});
 
         _addMarketInternal(vToken);
 
@@ -1124,7 +1138,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
         require(numMarkets != 0 && numMarkets == numBorrowCaps, "invalid input");
 
-        for(uint i = 0; i < numMarkets; i++) {
+        for (uint i = 0; i < numMarkets; i++) {
             borrowCaps[address(vTokens[i])] = newBorrowCaps[i];
             emit NewBorrowCap(vTokens[i], newBorrowCaps[i]);
         }
@@ -1148,7 +1162,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
     /**
      * @notice Set whole protocol pause/unpause state
      */
-    function _setProtocolPaused(bool state) public validPauseState(state) returns(bool) {
+    function _setProtocolPaused(bool state) public validPauseState(state) returns (bool) {
         protocolPaused = state;
         emit ActionProtocolPaused(state);
         return state;
@@ -1224,7 +1238,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
         uint currentVenusSpeed = venusSpeeds[address(vToken)];
         if (currentVenusSpeed != 0) {
             // note that XVS speed could be set to 0 to halt liquidity rewards for a market
-            Exp memory borrowIndex = Exp({mantissa: vToken.borrowIndex()});
+            Exp memory borrowIndex = Exp({mantissa : vToken.borrowIndex()});
             updateVenusSupplyIndex(address(vToken));
             updateVenusBorrowIndex(address(vToken), borrowIndex);
         } else if (venusSpeed != 0) {
@@ -1234,16 +1248,16 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
 
             if (venusSupplyState[address(vToken)].index == 0 && venusSupplyState[address(vToken)].block == 0) {
                 venusSupplyState[address(vToken)] = VenusMarketState({
-                    index: venusInitialIndex,
-                    block: safe32(getBlockNumber(), "block number exceeds 32 bits")
+                index : venusInitialIndex,
+                block : safe32(getBlockNumber(), "block number exceeds 32 bits")
                 });
             }
 
 
-        if (venusBorrowState[address(vToken)].index == 0 && venusBorrowState[address(vToken)].block == 0) {
+            if (venusBorrowState[address(vToken)].index == 0 && venusBorrowState[address(vToken)].block == 0) {
                 venusBorrowState[address(vToken)] = VenusMarketState({
-                    index: venusInitialIndex,
-                    block: safe32(getBlockNumber(), "block number exceeds 32 bits")
+                index : venusInitialIndex,
+                block : safe32(getBlockNumber(), "block number exceeds 32 bits")
                 });
             }
         }
@@ -1266,11 +1280,11 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
         if (deltaBlocks > 0 && supplySpeed > 0) {
             uint supplyTokens = VToken(vToken).totalSupply();
             uint venusAccrued = mul_(deltaBlocks, supplySpeed);
-            Double memory ratio = supplyTokens > 0 ? fraction(venusAccrued, supplyTokens) : Double({mantissa: 0});
-            Double memory index = add_(Double({mantissa: supplyState.index}), ratio);
+            Double memory ratio = supplyTokens > 0 ? fraction(venusAccrued, supplyTokens) : Double({mantissa : 0});
+            Double memory index = add_(Double({mantissa : supplyState.index}), ratio);
             venusSupplyState[vToken] = VenusMarketState({
-                index: safe224(index.mantissa, "new index overflows"),
-                block: safe32(blockNumber, "block number overflows")
+            index : safe224(index.mantissa, "new index overflows"),
+            block : safe32(blockNumber, "block number overflows")
             });
         } else if (deltaBlocks > 0) {
             supplyState.block = safe32(blockNumber, "block number overflows");
@@ -1289,11 +1303,11 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
         if (deltaBlocks > 0 && borrowSpeed > 0) {
             uint borrowAmount = div_(VToken(vToken).totalBorrows(), marketBorrowIndex);
             uint venusAccrued = mul_(deltaBlocks, borrowSpeed);
-            Double memory ratio = borrowAmount > 0 ? fraction(venusAccrued, borrowAmount) : Double({mantissa: 0});
-            Double memory index = add_(Double({mantissa: borrowState.index}), ratio);
+            Double memory ratio = borrowAmount > 0 ? fraction(venusAccrued, borrowAmount) : Double({mantissa : 0});
+            Double memory index = add_(Double({mantissa : borrowState.index}), ratio);
             venusBorrowState[vToken] = VenusMarketState({
-                index: safe224(index.mantissa, "new index overflows"),
-                block: safe32(blockNumber, "block number overflows")
+            index : safe224(index.mantissa, "new index overflows"),
+            block : safe32(blockNumber, "block number overflows")
             });
         } else if (deltaBlocks > 0) {
             borrowState.block = safe32(blockNumber, "block number overflows");
@@ -1311,8 +1325,8 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
         }
 
         VenusMarketState storage supplyState = venusSupplyState[vToken];
-        Double memory supplyIndex = Double({mantissa: supplyState.index});
-        Double memory supplierIndex = Double({mantissa: venusSupplierIndex[vToken][supplier]});
+        Double memory supplyIndex = Double({mantissa : supplyState.index});
+        Double memory supplierIndex = Double({mantissa : venusSupplierIndex[vToken][supplier]});
         venusSupplierIndex[vToken][supplier] = supplyIndex.mantissa;
 
         if (supplierIndex.mantissa == 0 && supplyIndex.mantissa > 0) {
@@ -1339,8 +1353,8 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
         }
 
         VenusMarketState storage borrowState = venusBorrowState[vToken];
-        Double memory borrowIndex = Double({mantissa: borrowState.index});
-        Double memory borrowerIndex = Double({mantissa: venusBorrowerIndex[vToken][borrower]});
+        Double memory borrowIndex = Double({mantissa : borrowState.index});
+        Double memory borrowerIndex = Double({mantissa : venusBorrowerIndex[vToken][borrower]});
         venusBorrowerIndex[vToken][borrower] = borrowIndex.mantissa;
 
         if (borrowerIndex.mantissa > 0) {
@@ -1404,7 +1418,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      */
     function claimVenus(address[] memory holders, VToken[] memory vTokens, bool borrowers, bool suppliers) public {
         uint j;
-        if(address(vaiController) != address(0)) {
+        if (address(vaiController) != address(0)) {
             vaiController.updateVenusVAIMintIndex();
         }
         for (j = 0; j < holders.length; j++) {
@@ -1415,7 +1429,7 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
             VToken vToken = vTokens[i];
             require(markets[address(vToken)].isListed, "not listed market");
             if (borrowers) {
-                Exp memory borrowIndex = Exp({mantissa: vToken.borrowIndex()});
+                Exp memory borrowIndex = Exp({mantissa : vToken.borrowIndex()});
                 updateVenusBorrowIndex(address(vToken), borrowIndex);
                 for (j = 0; j < holders.length; j++) {
                     distributeBorrowerVenus(address(vToken), holders[j], borrowIndex);
@@ -1539,14 +1553,14 @@ contract Comptroller is ComptrollerV4Storage, ComptrollerInterfaceG2, Comptrolle
      * @notice Transfer XVS to VAI Vault
      */
     function releaseToVault() public {
-        if(releaseStartBlock == 0 || getBlockNumber() < releaseStartBlock) {
+        if (releaseStartBlock == 0 || getBlockNumber() < releaseStartBlock) {
             return;
         }
 
         XVS xvs = XVS(getXVSAddress());
 
         uint256 xvsBalance = xvs.balanceOf(address(this));
-        if(xvsBalance == 0) {
+        if (xvsBalance == 0) {
             return;
         }
 

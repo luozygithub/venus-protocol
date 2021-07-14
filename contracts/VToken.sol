@@ -98,12 +98,12 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         if (mathErr != MathError.NO_ERROR) {
             return fail(Error.MATH_ERROR, FailureInfo.TRANSFER_NOT_ALLOWED);
         }
-
+        //验证授权余额够不够
         (mathErr, srvTokensNew) = subUInt(accountTokens[src], tokens);
         if (mathErr != MathError.NO_ERROR) {
             return fail(Error.MATH_ERROR, FailureInfo.TRANSFER_NOT_ENOUGH);
         }
-
+        //验证余额够不够
         (mathErr, dstTokensNew) = addUInt(accountTokens[dst], tokens);
         if (mathErr != MathError.NO_ERROR) {
             return fail(Error.MATH_ERROR, FailureInfo.TRANSFER_TOO_MUCH);
@@ -185,6 +185,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
     }
 
     /**
+     * 获取去除借款 * 抵押率后的可用资产
      * @notice Get the underlying balance of the `owner`
      * @dev This also accrues interest in a transaction
      * @param owner The address of the account to query
@@ -641,7 +642,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
     /*
-        * @notice用户赎回vtoken以换取基础资产
+        * @notice用户抵押基础资产以换取vtoken
         * @dev假设利息已经累积到当前块
         * @param redeemer赎回令牌的帐户地址
         * @param redeemTokensIn赎回到基础的vtoken的数量(只有一个redeemTokensIn或redeemAmountIn可能是非零的)
@@ -1436,6 +1437,12 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
      * @param newInterestRateModel the new interest rate model to use
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
+    /*
+        * @notice生成利息并使用_setinterestatemodelfresh更新利率模型
+        * @dev Admin函数增加利息和更新利率模型
+        * @param newinterestatemodel新的利率模型使用
+        * @return uint 0=success，否则失败(参见ErrorReporter。索尔详情)
+    */
     function _setInterestRateModel(InterestRateModel newInterestRateModel) public returns (uint) {
         uint error = accrueInterest();
         if (error != uint(Error.NO_ERROR)) {
