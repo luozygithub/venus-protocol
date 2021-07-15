@@ -1151,7 +1151,7 @@ contract VToken is VTokenInterface, Exponential, TokenErrorReporter {
         uint liquidatorTokensNew;
 
         /*
-         * We calculate the new borrower and liquidator token balances, failing on underflow/overflow:
+         *  We calculate the new borrower and liquidator token balances, failing on underflow/overflow:
          *  borrowerTokensNew = accountTokens[borrower] - seizeTokens
          *  liquidatorTokensNew = accountTokens[liquidator] + seizeTokens
          */
